@@ -1,0 +1,3391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
+<meta name="theme-color" content="#0a0b0d">
+<title>Hormonal Reset — Protocolo Pessoal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600;9..144,700&family=JetBrains+Mono:wght@400;500;600&family=Manrope:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+:root {
+  --bg: #0a0b0d;
+  --bg-elevated: #111316;
+  --card: #15171b;
+  --card-hover: #1a1d22;
+  --border: #24272d;
+  --border-strong: #32363d;
+  --text: #ededed;
+  --text-muted: #8b8f98;
+  --text-faint: #5a5e67;
+  --accent: #4ade80;
+  --accent-dim: #22c55e;
+  --accent-bg: rgba(74, 222, 128, 0.08);
+  --warn: #f59e0b;
+  --warn-bg: rgba(245, 158, 11, 0.1);
+  --danger: #ef4444;
+  --danger-bg: rgba(239, 68, 68, 0.08);
+  --info: #60a5fa;
+  --display: 'Fraunces', Georgia, serif;
+  --body: 'Manrope', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', monospace;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  overscroll-behavior: none;
+}
+
+body {
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 90px;
+  position: relative;
+}
+
+/* ======= ATMOSPHERIC BG ======= */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 300px;
+  background: radial-gradient(ellipse at top, rgba(74, 222, 128, 0.06), transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ======= LAYOUT ======= */
+.app { position: relative; z-index: 1; padding: 24px 20px 20px; }
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+
+.greeting {
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  font-style: italic;
+}
+
+.greeting .name { font-style: normal; font-weight: 500; color: var(--text); }
+
+.date-info {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-top: 6px;
+}
+
+.header-status {
+  text-align: right;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+.header-status .day-num {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 28px;
+  font-weight: 500;
+  color: var(--accent);
+  display: block;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+/* ======= CARD ======= */
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 14px;
+  position: relative;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+.card:hover { border-color: var(--border-strong); }
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+
+.card-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card-title .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent);
+}
+
+/* ======= STATS GRID ======= */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  position: relative;
+}
+
+.stat-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px;
+}
+
+.stat-value {
+  font-family: var(--display);
+  font-size: 36px;
+  font-weight: 400;
+  font-optical-sizing: auto;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+.stat-unit {
+  font-size: 14px;
+  color: var(--text-muted);
+  font-family: var(--body);
+  font-style: normal;
+  margin-left: 4px;
+}
+
+.stat-trend {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 20px;
+}
+
+.trend-down { background: var(--accent-bg); color: var(--accent); }
+.trend-up { background: var(--danger-bg); color: var(--danger); }
+.trend-neutral { background: var(--border); color: var(--text-muted); }
+
+/* ======= PROGRESS BAR ======= */
+.progress-bar {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 12px;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent));
+  border-radius: 2px;
+  transition: width 0.5s ease;
+}
+
+/* ======= CHECKLIST ======= */
+.checklist-section {
+  margin-bottom: 14px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: all 0.2s;
+}
+.section-header:active { background: var(--card-hover); }
+.section-header.expanded { border-radius: 14px 14px 0 0; border-bottom-color: transparent; }
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.section-icon {
+  font-size: 18px;
+}
+
+.section-count {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.section-items {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-top: none;
+  border-radius: 0 0 14px 14px;
+  padding: 4px 0;
+  display: none;
+}
+.section-items.expanded { display: block; }
+
+.check-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 14px 20px;
+  cursor: pointer;
+  transition: background 0.15s;
+  border-bottom: 1px solid var(--border);
+}
+.check-item:last-child { border-bottom: none; }
+.check-item:active { background: var(--card-hover); }
+
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border: 1.5px solid var(--border-strong);
+  border-radius: 7px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+  transition: all 0.2s;
+}
+
+.check-item.checked .checkbox {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.check-item.checked .checkbox::after {
+  content: '';
+  width: 6px;
+  height: 10px;
+  border: solid var(--bg);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+  margin-top: -3px;
+  animation: checkPop 0.3s ease;
+}
+
+@keyframes checkPop {
+  0% { opacity: 0; transform: rotate(45deg) scale(0); }
+  50% { transform: rotate(45deg) scale(1.3); }
+  100% { opacity: 1; transform: rotate(45deg) scale(1); }
+}
+
+.check-label {
+  flex: 1;
+  font-size: 14.5px;
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+.check-item.checked .check-label { color: var(--text-muted); text-decoration: line-through; text-decoration-color: var(--text-faint); }
+
+.check-note {
+  font-size: 11.5px;
+  color: var(--text-faint);
+  margin-top: 3px;
+  font-family: var(--mono);
+}
+
+/* ======= NAV ======= */
+.bottom-nav {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;
+  background: rgba(10, 11, 13, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--border);
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 8px calc(10px + env(safe-area-inset-bottom));
+  z-index: 100;
+}
+
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  background: none;
+  border: none;
+  color: var(--text-faint);
+  cursor: pointer;
+  font-family: var(--body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  transition: color 0.2s;
+  text-transform: uppercase;
+}
+.nav-item.active { color: var(--accent); }
+.nav-item svg { width: 22px; height: 22px; }
+
+/* ======= BUTTONS ======= */
+.btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 14px 24px;
+  border-radius: 12px;
+  font-family: var(--body);
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+  letter-spacing: 0.02em;
+}
+.btn:active { transform: scale(0.98); }
+.btn-secondary {
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+}
+.btn-ghost {
+  background: transparent;
+  color: var(--text-muted);
+  border: 1px dashed var(--border-strong);
+}
+.btn-danger { background: var(--danger); color: white; }
+
+/* ======= FORM ======= */
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+}
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-family: var(--body);
+  transition: border-color 0.2s;
+}
+
+.form-input:focus, .form-select:focus, .form-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.form-input[type="number"] { font-family: var(--mono); }
+
+.form-textarea { resize: vertical; min-height: 80px; font-family: var(--body); }
+
+.slider-container {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+}
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 22px;
+  height: 22px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 12px rgba(74, 222, 128, 0.4);
+}
+.slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  background: var(--accent);
+  border-radius: 50%;
+  cursor: pointer;
+  border: none;
+}
+
+.slider-value {
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 500;
+  min-width: 36px;
+  text-align: center;
+  color: var(--accent);
+}
+
+/* ======= PAGE TITLE ======= */
+.page-title {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  margin-bottom: 6px;
+  line-height: 1.1;
+}
+.page-title em { font-style: italic; color: var(--accent); }
+
+.page-subtitle {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-bottom: 24px;
+}
+
+/* ======= TABLE ======= */
+.table {
+  width: 100%;
+  font-size: 13px;
+}
+.table th {
+  text-align: left;
+  font-weight: 600;
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+.table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+}
+.table .tag {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-family: var(--body);
+  font-weight: 600;
+}
+.tag-ok { background: var(--accent-bg); color: var(--accent); }
+.tag-warn { background: var(--warn-bg); color: var(--warn); }
+.tag-bad { background: var(--danger-bg); color: var(--danger); }
+
+/* ======= EMPTY STATE ======= */
+.empty-state {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--text-muted);
+}
+.empty-state h3 {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.empty-state p { font-size: 14px; margin-bottom: 20px; }
+
+/* ======= TOAST ======= */
+.toast {
+  position: fixed;
+  bottom: 100px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: var(--bg);
+  padding: 12px 20px;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 13px;
+  z-index: 1000;
+  animation: toastIn 0.3s ease, toastOut 0.3s ease 2.5s forwards;
+  box-shadow: 0 8px 32px rgba(74, 222, 128, 0.3);
+}
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(20px); }
+  to { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+@keyframes toastOut {
+  to { opacity: 0; transform: translateX(-50%) translateY(10px); }
+}
+
+/* ======= STREAK ======= */
+.streak-display {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.streak-num {
+  font-family: var(--display);
+  font-size: 54px;
+  font-weight: 500;
+  letter-spacing: -0.04em;
+  line-height: 1;
+  background: linear-gradient(180deg, #fbbf24, #f59e0b);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ======= CHART ======= */
+.chart-container {
+  position: relative;
+  height: 220px;
+  margin-top: 8px;
+}
+
+/* ======= MODAL ======= */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 500;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  animation: fadeIn 0.2s;
+}
+.modal {
+  background: var(--bg-elevated);
+  width: 100%;
+  max-width: 480px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 20px 20px 0 0;
+  padding: 24px 20px;
+  animation: slideUp 0.3s ease;
+  border-top: 1px solid var(--border);
+}
+.modal-handle {
+  width: 40px;
+  height: 4px;
+  background: var(--border-strong);
+  border-radius: 2px;
+  margin: -12px auto 16px;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* ======= TABS ======= */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  background: var(--card);
+  padding: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.tab {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: var(--body);
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.tab.active { background: var(--accent); color: var(--bg); font-weight: 600; }
+
+/* ======= QUOTE ======= */
+.quote {
+  font-family: var(--display);
+  font-size: 16px;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text-muted);
+  padding: 0 8px;
+  border-left: 2px solid var(--accent);
+  padding-left: 14px;
+  margin-top: 4px;
+}
+
+/* ======= UTILITIES ======= */
+.hidden { display: none !important; }
+.flex-between { display: flex; justify-content: space-between; align-items: center; }
+.text-muted { color: var(--text-muted); }
+.text-small { font-size: 12px; }
+.mt-16 { margin-top: 16px; }
+.mt-24 { margin-top: 24px; }
+
+/* ======= DAILY RESET ANIMATION ======= */
+.complete-celebration {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+}
+
+/* ======= EXAM GROUPS (empty state) ======= */
+.exam-group {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 12px 14px;
+}
+.exam-group-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.exam-group-items {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: var(--mono);
+  line-height: 1.5;
+}
+
+/* ======= LAB CATEGORIES ======= */
+.lab-category-section {
+  margin-bottom: 24px;
+  padding: 14px 14px 4px;
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+.lab-category-title {
+  font-family: var(--display);
+  font-size: 16px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--accent);
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  letter-spacing: -0.02em;
+}
+.lab-category-title span {
+  font-size: 18px;
+  font-style: normal;
+}
+
+/* ======= LAB RESULT CARD ======= */
+.lab-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.lab-date {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+.lab-markers {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.lab-marker {
+  background: var(--bg-elevated);
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 12px;
+}
+.lab-marker-name {
+  color: var(--text-muted);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2px;
+}
+.lab-marker-value {
+  font-family: var(--mono);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* ======= SCROLLBAR ======= */
+::-webkit-scrollbar { width: 0; }
+
+@media (max-width: 400px) {
+  .app { padding: 20px 16px; }
+  .greeting { font-size: 28px; }
+  .stats-grid { grid-template-columns: 1fr; }
+}
+
+/* ======= NAV: 6 abas (mais compacto) ======= */
+.bottom-nav .nav-item { padding: 6px 2px; font-size: 9.5px; gap: 3px; }
+.bottom-nav .nav-item svg { width: 20px; height: 20px; }
+
+/* ======= BOTÃO EDITAR ROTINA ======= */
+.btn-edit-routine {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--card); border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  padding: 8px 12px; border-radius: 100px;
+  font-size: 12px; font-weight: 600;
+  cursor: pointer; transition: all 0.2s;
+  font-family: var(--body);
+}
+.btn-edit-routine:hover { color: var(--accent); border-color: var(--accent); }
+
+/* ======= ROUTINE EDITOR ======= */
+.routine-editor-section {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  overflow: hidden;
+}
+.routine-editor-section-head {
+  display: flex; align-items: center; gap: 8px;
+  padding: 12px 14px; background: var(--bg-elevated);
+  border-bottom: 1px solid var(--border);
+}
+.routine-editor-section-head input.section-title-input {
+  flex: 1; background: transparent; border: none; color: var(--text);
+  font-weight: 600; font-size: 14px; font-family: var(--body); outline: none;
+}
+.routine-editor-section-head input.section-icon-input {
+  width: 36px; background: transparent; border: 1px solid var(--border-strong);
+  color: var(--text); border-radius: 8px; padding: 6px; text-align: center;
+  font-size: 14px; outline: none;
+}
+.routine-editor-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 14px; border-bottom: 1px solid var(--border);
+}
+.routine-editor-item:last-child { border-bottom: none; }
+.routine-editor-item input.item-label-input,
+.routine-editor-item input.item-note-input {
+  flex: 1; background: var(--bg-elevated); border: 1px solid var(--border);
+  color: var(--text); padding: 8px 10px; border-radius: 8px;
+  font-size: 13px; font-family: var(--body); outline: none;
+}
+.routine-editor-item input.item-note-input { color: var(--text-muted); font-size: 12px; }
+.routine-editor-item input:focus { border-color: var(--accent); }
+.routine-editor-add-row {
+  display: flex; gap: 6px;
+  padding: 10px 14px; background: var(--bg);
+}
+.btn-icon {
+  background: transparent; border: 1px solid var(--border);
+  color: var(--text-muted); width: 32px; height: 32px;
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s; flex-shrink: 0;
+}
+.btn-icon:hover { color: var(--accent); border-color: var(--accent); }
+.btn-icon.danger:hover { color: var(--danger); border-color: var(--danger); }
+
+/* ======= WORKOUTS ======= */
+.exercise-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.exercise-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+.exercise-name {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.exercise-muscle {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-radius: 100px;
+  margin-bottom: 8px;
+}
+.exercise-meta {
+  display: flex; gap: 14px;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-muted);
+}
+.exercise-meta span strong { color: var(--text); font-weight: 600; }
+
+.set-row {
+  display: grid;
+  grid-template-columns: 28px 1fr 1fr 32px;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.set-row .set-num {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  text-align: center;
+}
+.session-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.session-card-head {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 8px;
+}
+.session-date {
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.session-sets {
+  display: flex; flex-wrap: wrap; gap: 6px;
+}
+.session-set-pill {
+  background: var(--bg-elevated);
+  padding: 4px 8px;
+  border-radius: 100px;
+  font-family: var(--mono); font-size: 11px;
+  color: var(--text);
+  border: 1px solid var(--border);
+}
+.session-set-pill strong { color: var(--accent); }
+
+.muscle-filter {
+  display: flex; gap: 6px; overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+}
+.muscle-filter::-webkit-scrollbar { display: none; }
+.muscle-filter button {
+  flex-shrink: 0;
+  background: var(--card);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--body);
+  transition: all 0.15s;
+}
+.muscle-filter button.active {
+  background: var(--accent); color: var(--bg); border-color: var(--accent); font-weight: 600;
+}
+
+/* ======= LABS — resumo de saúde ======= */
+.health-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.health-cat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+}
+.health-cat-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.health-cat-card.warn::before { background: var(--warn); }
+.health-cat-card.bad::before { background: var(--danger); }
+.health-cat-name {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.health-cat-counts {
+  display: flex; gap: 8px;
+  font-family: var(--mono); font-size: 11px;
+}
+.health-cat-counts span { display: flex; align-items: center; gap: 3px; }
+.health-cat-counts .dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  display: inline-block;
+}
+.health-cat-counts .dot.ok { background: var(--accent); }
+.health-cat-counts .dot.warn { background: var(--warn); }
+.health-cat-counts .dot.bad { background: var(--danger); }
+
+.lab-marker { cursor: pointer; transition: all 0.15s; }
+.lab-marker:hover { transform: translateY(-1px); border: 1px solid var(--accent); background: var(--card-hover); }
+.lab-marker.bad-bg { background: rgba(239, 68, 68, 0.06); }
+.lab-marker.warn-bg { background: rgba(245, 158, 11, 0.06); }
+.lab-marker.ok-bg { background: rgba(74, 222, 128, 0.04); }
+.lab-delta {
+  font-family: var(--mono);
+  font-size: 10px;
+  margin-top: 4px;
+  display: flex; align-items: center; gap: 3px;
+}
+.lab-delta.improve { color: var(--accent); }
+.lab-delta.worsen { color: var(--danger); }
+.lab-delta.same { color: var(--text-faint); }
+
+/* ======= DATE NAV ======= */
+.date-nav {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 18px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 8px 10px;
+}
+.date-nav-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-muted);
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s;
+}
+.date-nav-btn:hover:not(:disabled) { color: var(--accent); border-color: var(--accent); }
+.date-nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.date-nav-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  text-align: center;
+  outline: none;
+  cursor: pointer;
+}
+.date-nav-input::-webkit-calendar-picker-indicator {
+  filter: invert(0.6);
+  cursor: pointer;
+}
+.date-nav-today {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: var(--body);
+}
+
+/* ======= SAVED INDICATOR ======= */
+.saved-indicator {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateY(-2px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+.saved-indicator.show { opacity: 1; transform: translateY(0); }
+
+/* ======= HEATMAP DE ADESÃO ======= */
+.heatmap-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-bottom: 10px;
+}
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  background: var(--border);
+  cursor: pointer;
+  transition: transform 0.15s;
+}
+.heatmap-cell:hover { transform: scale(1.15); }
+.heatmap-cell.today { box-shadow: 0 0 0 2px var(--accent); }
+.heatmap-cell.empty { background: var(--bg-elevated); border: 1px dashed var(--border-strong); }
+.heatmap-cell.l0 { background: rgba(239, 68, 68, 0.5); }
+.heatmap-cell.l1 { background: rgba(245, 158, 11, 0.4); }
+.heatmap-cell.l2 { background: rgba(245, 158, 11, 0.7); }
+.heatmap-cell.l3 { background: rgba(74, 222, 128, 0.55); }
+.heatmap-cell.l4 { background: var(--accent); }
+.heatmap-legend {
+  display: flex; align-items: center; gap: 4px;
+  font-size: 10px; color: var(--text-faint);
+  font-family: var(--mono);
+}
+.heatmap-legend .hl { width: 10px; height: 10px; border-radius: 2px; }
+.heatmap-legend .hl.l0 { background: rgba(239, 68, 68, 0.5); }
+.heatmap-legend .hl.l1 { background: rgba(245, 158, 11, 0.4); }
+.heatmap-legend .hl.l2 { background: rgba(245, 158, 11, 0.7); }
+.heatmap-legend .hl.l3 { background: rgba(74, 222, 128, 0.55); }
+.heatmap-legend .hl.l4 { background: var(--accent); }
+
+/* ======= PR BADGE ======= */
+.pr-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: linear-gradient(135deg, #fbbf24, #f59e0b);
+  color: #1a1d22;
+  padding: 2px 8px;
+  border-radius: 100px;
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-left: 6px;
+}
+
+/* ======= PROGRESSION SUGGESTION ======= */
+.progression-card {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.1), rgba(96, 165, 250, 0.05));
+  border: 1px solid var(--accent);
+  border-radius: 12px;
+  padding: 14px;
+  margin-bottom: 14px;
+}
+.progression-card-title {
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 6px;
+}
+.progression-suggestion {
+  font-family: var(--display);
+  font-size: 22px;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+.progression-meta {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ======= LAST EXAM BANNER ======= */
+.exam-time-banner {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  font-size: 13px;
+}
+.exam-time-banner.recent {
+  background: var(--accent-bg);
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+.exam-time-banner.old {
+  background: var(--warn-bg);
+  color: var(--warn);
+  border: 1px solid var(--warn);
+}
+.exam-time-banner.old-very {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+</style>
+</head>
+<body>
+
+<div class="app" id="app"></div>
+
+<nav class="bottom-nav">
+  <button class="nav-item active" data-view="dashboard">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    Hoje
+  </button>
+  <button class="nav-item" data-view="checklist">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+    Rotina
+  </button>
+  <button class="nav-item" data-view="progress">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+    Progresso
+  </button>
+  <button class="nav-item" data-view="workouts">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14.4 14.4 9.6 9.6"/><path d="M18.657 21.485a2 2 0 1 1-2.829-2.828l-1.767 1.768a2 2 0 1 1-2.829-2.829l6.364-6.364a2 2 0 1 1 2.829 2.829l-1.768 1.767a2 2 0 1 1 2.828 2.829z"/><path d="m21.5 21.5-1.4-1.4"/><path d="M3.9 3.9 2.5 2.5"/><path d="M6.404 12.768a2 2 0 1 1-2.829-2.829l1.768-1.767a2 2 0 1 1-2.828-2.829l2.828-2.828a2 2 0 1 1 2.829 2.828l1.767-1.768a2 2 0 1 1 2.829 2.829z"/></svg>
+    Treino
+  </button>
+  <button class="nav-item" data-view="labs">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2v7.527a2 2 0 01-.211.896L4.72 20.55a1 1 0 00.9 1.45h12.76a1 1 0 00.9-1.45l-5.069-10.127A2 2 0 0114 9.527V2"/><path d="M8.5 2h7"/><path d="M7 16h10"/></svg>
+    Exames
+  </button>
+  <button class="nav-item" data-view="settings">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2 2 2 0 01-2-2v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83 0 2 2 0 010-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2 2 2 0 012-2h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 010-2.83 2 2 0 012.83 0l.06.06a1.65 1.65 0 001.82.33H9a1.65 1.65 0 001-1.51V3a2 2 0 012-2 2 2 0 012 2v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 0 2 2 0 010 2.83l-.06.06a1.65 1.65 0 00-.33 1.82V9a1.65 1.65 0 001.51 1H21a2 2 0 012 2 2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+    Ajustes
+  </button>
+</nav>
+
+<script>
+// ============================================================================
+// STATE & STORAGE
+// ============================================================================
+
+const STORAGE_KEY = 'hormonalReset_v1';
+
+const DEFAULT_STATE = {
+  user: {
+    name: 'Você',
+    age: 26,
+    height: 175,
+    initialWeight: 92,
+    targetWeight: 78,
+    startDate: new Date().toISOString().split('T')[0],
+  },
+  dailyCheckins: {}, // { 'YYYY-MM-DD': { items: {...}, steps, workout, sleep, completedAt } }
+  weeklyReviews: [], // [{ date, weight, waist, libido, sleep, energy, ... }]
+  labResults: [],
+  customRoutine: null, // null = usa CHECKLIST_TEMPLATE_DEFAULT (override do usuário)
+  exercises: [], // { id, name, muscleGroup, notes }
+  workoutSessions: [], // { id, date, exerciseId, sets:[{weight,reps}], notes }
+  supplements: [
+    { id: 's1', name: 'Vitamina D3 + K2', dose: '4000 UI + 100 mcg', time: 'manhã', active: true },
+    { id: 's2', name: 'Ômega-3', dose: '2-3 g', time: 'manhã', active: true },
+    { id: 's3', name: 'Creatina', dose: '5 g', time: 'qualquer', active: true },
+    { id: 's4', name: 'Ashwagandha KSM-66', dose: '300 mg', time: 'manhã', active: true },
+    { id: 's5', name: 'Ashwagandha KSM-66', dose: '300 mg', time: 'noite', active: true },
+    { id: 's6', name: 'Magnésio glicinato', dose: '400 mg', time: 'noite', active: true },
+    { id: 's7', name: 'Zinco bisglicinato', dose: '15 mg', time: 'noite (seg/qua/sex)', active: true },
+  ],
+  settings: { lastReset: null },
+};
+
+let state = loadState();
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return structuredClone(DEFAULT_STATE);
+    const parsed = JSON.parse(raw);
+    // Merge with defaults to preserve new fields
+    return { ...structuredClone(DEFAULT_STATE), ...parsed };
+  } catch (e) {
+    console.error('Load failed:', e);
+    return structuredClone(DEFAULT_STATE);
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch (e) {
+    toast('Erro ao salvar', true);
+  }
+}
+
+// ============================================================================
+// CHECKLIST TEMPLATE (rotina padrão; pode ser sobrescrita pelo usuário)
+// ============================================================================
+
+const CHECKLIST_TEMPLATE_DEFAULT = [
+  {
+    id: 'morning',
+    title: 'Manhã',
+    icon: '🌅',
+    items: [
+      { id: 'sun', label: 'Sol direto 10-20 min', note: 'Antes das 9h' },
+      { id: 'water1', label: '500 ml de água ao acordar' },
+      { id: 'breakfast', label: 'Café da manhã proteico', note: '3-4 ovos, 30g+ proteína' },
+      { id: 'vitd', label: 'Vitamina D3 + K2', note: '4000 UI + 100 mcg' },
+      { id: 'omega', label: 'Ômega-3', note: '2-3 g EPA+DHA' },
+      { id: 'ashwaM', label: 'Ashwagandha (manhã)', note: '300 mg' },
+    ]
+  },
+  {
+    id: 'day',
+    title: 'Durante o dia',
+    icon: '☀️',
+    items: [
+      { id: 'lunch', label: 'Almoço balanceado', note: 'Proteína + carbo complexo' },
+      { id: 'water2', label: '3L de água no total' },
+      { id: 'caffcut', label: 'Última cafeína antes das 13h' },
+      { id: 'steps', label: '10.000+ passos', note: 'Registre no card' },
+      { id: 'noprocess', label: 'Sem ultraprocessados' },
+      { id: 'berb', label: 'Berberina (se prescrita)', note: '500 mg c/ almoço' },
+    ]
+  },
+  {
+    id: 'training',
+    title: 'Treino',
+    icon: '🏋️',
+    items: [
+      { id: 'trained', label: 'Treino realizado', note: 'Marque o tipo abaixo' },
+      { id: 'creatina', label: 'Creatina 5g', note: 'Qualquer horário' },
+      { id: 'postworkout', label: 'Proteína pós-treino (1-2h)', note: '30-40g' },
+    ]
+  },
+  {
+    id: 'night',
+    title: 'Noite',
+    icon: '🌙',
+    items: [
+      { id: 'dinner', label: 'Jantar 3h antes de dormir' },
+      { id: 'noalcohol', label: 'Zero álcool hoje' },
+      { id: 'screens', label: 'Telas reduzidas após 21h' },
+      { id: 'mag', label: 'Magnésio glicinato', note: '400 mg' },
+      { id: 'ashwaN', label: 'Ashwagandha (noite)', note: '300 mg' },
+      { id: 'zinc', label: 'Zinco (seg/qua/sex)', note: '15 mg, longe de cálcio' },
+      { id: 'sleep', label: 'Dormir no horário', note: 'Meta: 7h30-9h' },
+    ]
+  },
+];
+
+// Retorna a rotina ativa: a customizada do usuário, se existir; senão, a padrão
+function getRoutineTemplate() {
+  if (state.customRoutine && Array.isArray(state.customRoutine) && state.customRoutine.length > 0) {
+    return state.customRoutine;
+  }
+  return CHECKLIST_TEMPLATE_DEFAULT;
+}
+
+// ============================================================================
+// HELPERS
+// ============================================================================
+
+function todayKey() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function dateToBR(iso) {
+  const d = new Date(iso + 'T12:00:00');
+  return d.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+}
+
+function daysSinceStart() {
+  const start = new Date(state.user.startDate + 'T00:00:00');
+  const now = new Date();
+  now.setHours(0,0,0,0);
+  return Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1;
+}
+
+function getTodayCheckin() {
+  return getCheckinForDate(todayKey());
+}
+
+function getCheckinForDate(dateKey) {
+  if (!state.dailyCheckins[dateKey]) {
+    state.dailyCheckins[dateKey] = {
+      items: {},
+      steps: null,
+      workout: null,
+      bedtime: null,
+      sleepHours: null,
+      notes: '',
+    };
+  }
+  return state.dailyCheckins[dateKey];
+}
+
+function shiftViewingDate(deltaDays) {
+  const d = new Date(viewingDate + 'T12:00:00');
+  d.setDate(d.getDate() + deltaDays);
+  const newKey = d.toISOString().split('T')[0];
+  if (newKey > todayKey()) return;
+  viewingDate = newKey;
+  render();
+}
+
+function setViewingDate(dateKey) {
+  if (dateKey > todayKey()) dateKey = todayKey();
+  viewingDate = dateKey;
+  render();
+}
+
+function viewingDateLabel() {
+  if (viewingDate === todayKey()) return 'hoje';
+  const today = new Date(todayKey() + 'T12:00:00');
+  const v = new Date(viewingDate + 'T12:00:00');
+  const diffDays = Math.round((today - v) / 86400000);
+  if (diffDays === 1) return 'ontem';
+  if (diffDays < 7) return v.toLocaleDateString('pt-BR', { weekday: 'long' });
+  return v.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+}
+
+function viewingDateFull() {
+  const v = new Date(viewingDate + 'T12:00:00');
+  return v.toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' });
+}
+
+function getCompletionRate(checkin) {
+  const total = getRoutineTemplate().reduce((sum, s) => sum + s.items.length, 0);
+  const done = Object.values(checkin.items || {}).filter(v => v).length;
+  return total > 0 ? Math.round((done / total) * 100) : 0;
+}
+
+function getStreak() {
+  let streak = 0;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    const checkin = state.dailyCheckins[key];
+    if (!checkin) { if (i === 0) continue; else break; }
+    const rate = getCompletionRate(checkin);
+    if (rate >= 70) streak++;
+    else if (i > 0) break;
+  }
+  return streak;
+}
+
+function getLastWeight() {
+  if (state.weeklyReviews.length === 0) return state.user.initialWeight;
+  return state.weeklyReviews[state.weeklyReviews.length - 1].weight;
+}
+
+function getWeightTrend() {
+  if (state.weeklyReviews.length < 2) return null;
+  const last = state.weeklyReviews[state.weeklyReviews.length - 1].weight;
+  const prev = state.weeklyReviews[state.weeklyReviews.length - 2].weight;
+  return (last - prev).toFixed(1);
+}
+
+function greetingByHour() {
+  const h = new Date().getHours();
+  if (h < 12) return 'Bom dia,';
+  if (h < 18) return 'Boa tarde,';
+  return 'Boa noite,';
+}
+
+const QUOTES = [
+  "O corpo muda quando a rotina muda, não quando a motivação chega.",
+  "Disciplina é liberdade. Estruture o presente para escolher o futuro.",
+  "O melhor sono é a melhor droga natural que existe.",
+  "Aos 26, seu corpo ainda é argila. Molde com consistência.",
+  "Cada refeição é um voto no homem que você quer ser.",
+  "Perder gordura é ganhar testosterona.",
+  "O caminho curto é também o único que funciona.",
+  "Não é sobre ser perfeito. É sobre não parar.",
+];
+
+// ============================================================================
+// TOAST
+// ============================================================================
+
+function toast(msg, isError = false) {
+  const existing = document.querySelector('.toast');
+  if (existing) existing.remove();
+  const el = document.createElement('div');
+  el.className = 'toast';
+  if (isError) { el.style.background = 'var(--danger)'; el.style.color = 'white'; }
+  el.textContent = msg;
+  document.body.appendChild(el);
+  setTimeout(() => el.remove(), 3000);
+}
+
+// ============================================================================
+// ROUTER
+// ============================================================================
+
+let currentView = 'dashboard';
+let viewingDate = todayKey(); // dia exibido na view Rotina (default: hoje)
+
+function navigate(view) {
+  if (view === 'checklist') viewingDate = todayKey();
+  currentView = view;
+  document.querySelectorAll('.nav-item').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.view === view);
+  });
+  render();
+  window.scrollTo(0, 0);
+}
+
+// ============================================================================
+// VIEWS
+// ============================================================================
+
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+  
+  switch (currentView) {
+    case 'dashboard': renderDashboard(app); break;
+    case 'checklist': renderChecklist(app); break;
+    case 'progress': renderProgress(app); break;
+    case 'workouts': renderWorkouts(app); break;
+    case 'labs': renderLabs(app); break;
+    case 'settings': renderSettings(app); break;
+  }
+}
+
+// ---------- DASHBOARD ----------
+
+function renderDashboard(app) {
+  const checkin = getTodayCheckin();
+  const completion = getCompletionRate(checkin);
+  const streak = getStreak();
+  const day = daysSinceStart();
+  const currentWeight = getLastWeight();
+  const trend = getWeightTrend();
+  const quote = QUOTES[new Date().getDate() % QUOTES.length];
+  
+  app.innerHTML = `
+    <div class="header">
+      <div>
+        <div class="greeting">${greetingByHour()} <span class="name">${state.user.name}</span>.</div>
+        <div class="date-info">${new Date().toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long' })}</div>
+      </div>
+      <div class="header-status">
+        <span class="day-num">${day}</span>
+        dia do<br>protocolo
+      </div>
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, var(--card), var(--bg-elevated));">
+      <div class="card-header">
+        <div class="card-title"><span class="dot"></span>Progresso de hoje</div>
+        <div style="font-family: var(--mono); font-size: 13px; color: ${completion === 100 ? 'var(--accent)' : 'var(--text-muted)'};">${completion}%</div>
+      </div>
+      <div class="stat-value">${Object.values(checkin.items || {}).filter(v=>v).length}<span class="stat-unit">/ ${getRoutineTemplate().reduce((s,c)=>s+c.items.length,0)} itens</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width: ${completion}%"></div></div>
+      <button class="btn mt-16" onclick="navigate('checklist')">${completion === 100 ? 'Revisar hoje' : 'Continuar rotina'}</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-label">Peso atual</div>
+        <div class="stat-value">${currentWeight}<span class="stat-unit">kg</span></div>
+        ${trend !== null ? `<div class="stat-trend ${parseFloat(trend) < 0 ? 'trend-down' : parseFloat(trend) > 0 ? 'trend-up' : 'trend-neutral'}">${parseFloat(trend) < 0 ? '↓' : parseFloat(trend) > 0 ? '↑' : '→'} ${Math.abs(parseFloat(trend))}kg</div>` : ''}
+      </div>
+      <div class="stat">
+        <div class="stat-label">Streak</div>
+        <div class="streak-display">
+          <span class="streak-num">${streak}</span>
+          <span style="color: var(--text-muted); font-size: 13px;">${streak === 1 ? 'dia' : 'dias'}</span>
+        </div>
+        <div style="font-size: 10px; color: var(--text-faint); margin-top: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em;">≥70% ADESÃO</div>
+      </div>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat">
+        <div class="stat-label">Meta</div>
+        <div class="stat-value">${state.user.targetWeight}<span class="stat-unit">kg</span></div>
+        <div style="font-size: 10px; color: var(--text-faint); margin-top: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em;">faltam ${(currentWeight - state.user.targetWeight).toFixed(1)}kg</div>
+      </div>
+      <div class="stat">
+        <div class="stat-label">IMC</div>
+        <div class="stat-value">${(currentWeight / Math.pow(state.user.height/100, 2)).toFixed(1)}</div>
+        <div style="font-size: 10px; color: var(--text-faint); margin-top: 6px; font-family: var(--mono); text-transform: uppercase; letter-spacing: 0.08em;">meta: &lt; 25</div>
+      </div>
+    </div>
+
+    ${shouldShowWeeklyPrompt() ? `
+    <div class="card" style="border-color: var(--warn);">
+      <div class="card-title" style="color: var(--warn); margin-bottom: 10px;"><span class="dot" style="background: var(--warn); box-shadow: 0 0 8px var(--warn);"></span>Registro semanal pendente</div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Hoje é sexta — hora de registrar peso, cintura e scores da semana.</p>
+      <button class="btn" style="background: var(--warn);" onclick="openWeeklyReview()">Fazer registro</button>
+    </div>
+    ` : ''}
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 12px;">Reflexão</div>
+      <div class="quote">${quote}</div>
+    </div>
+
+    ${renderAdherenceHeatmap()}
+
+    ${renderWeekWorkoutSummary()}
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 14px;">Ações rápidas</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button class="btn btn-secondary" onclick="openWeeklyReview()" style="font-size: 12px;">Registro semanal</button>
+        <button class="btn btn-secondary" onclick="navigate('labs'); setTimeout(()=>openLabForm(),100);" style="font-size: 12px;">Novo exame</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 14px;">Atalhos</div>
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+        <button class="btn btn-secondary" onclick="navigate('checklist')" style="font-size: 12px;">Rotina</button>
+        <button class="btn btn-secondary" onclick="navigate('workouts')" style="font-size: 12px;">Treino</button>
+      </div>
+    </div>
+  `;
+}
+
+// ---------- DASHBOARD: HEATMAP & STATS ----------
+
+function renderAdherenceHeatmap() {
+  const today = new Date(todayKey() + 'T12:00:00');
+  const days = [];
+  for (let i = 20; i >= 0; i--) {
+    const d = new Date(today);
+    d.setDate(d.getDate() - i);
+    const key = d.toISOString().split('T')[0];
+    const checkin = state.dailyCheckins[key];
+    const rate = checkin ? getCompletionRate(checkin) : null;
+    days.push({ key, date: d, rate });
+  }
+
+  return `
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 12px;">
+        <span class="dot"></span>Adesão · últimas 3 semanas
+      </div>
+      <div class="heatmap-grid">
+        ${days.map(d => {
+          let cls = 'empty';
+          if (d.rate !== null) {
+            if (d.rate >= 90) cls = 'l4';
+            else if (d.rate >= 70) cls = 'l3';
+            else if (d.rate >= 40) cls = 'l2';
+            else if (d.rate > 0) cls = 'l1';
+            else cls = 'l0';
+          }
+          const isTodayCell = d.key === todayKey();
+          const label = d.date.toLocaleDateString('pt-BR', { day: '2-digit', month: 'short' });
+          return `<div class="heatmap-cell ${cls} ${isTodayCell ? 'today' : ''}"
+            onclick="setViewingDate('${d.key}'); navigate('checklist');"
+            title="${label}: ${d.rate !== null ? d.rate + '% de adesão' : 'sem registro'}"></div>`;
+        }).join('')}
+      </div>
+      <div class="heatmap-legend">
+        <span>Menos</span>
+        <span class="hl l0"></span>
+        <span class="hl l1"></span>
+        <span class="hl l2"></span>
+        <span class="hl l3"></span>
+        <span class="hl l4"></span>
+        <span>Mais</span>
+      </div>
+    </div>
+  `;
+}
+
+function renderWeekWorkoutSummary() {
+  const today = new Date();
+  const dayOfWeek = today.getDay();
+  const monday = new Date(today);
+  const offsetToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek;
+  monday.setDate(today.getDate() + offsetToMonday);
+  monday.setHours(0,0,0,0);
+  const mondayKey = monday.toISOString().split('T')[0];
+
+  const sessionsThisWeek = state.workoutSessions.filter(s => s.date >= mondayKey);
+  if (sessionsThisWeek.length === 0 && state.exercises.length === 0) return '';
+
+  const totalSessions = sessionsThisWeek.length;
+  const totalVolume = sessionsThisWeek.reduce((sum, s) =>
+    sum + (s.sets || []).reduce((vs, set) => vs + (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0), 0)
+  , 0);
+  const totalSets = sessionsThisWeek.reduce((sum, s) => sum + (s.sets || []).length, 0);
+  const muscleGroupsHit = new Set(
+    sessionsThisWeek.map(s => {
+      const ex = state.exercises.find(e => e.id === s.exerciseId);
+      return ex ? ex.muscleGroup : null;
+    }).filter(Boolean)
+  );
+
+  return `
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 12px;">
+        <span class="dot"></span>Treino · esta semana
+      </div>
+      <div class="stats-grid" style="margin-bottom: 0;">
+        <div class="stat" style="padding: 12px;">
+          <div class="stat-label">Sessões</div>
+          <div class="stat-value" style="font-size: 28px;">${totalSessions}</div>
+        </div>
+        <div class="stat" style="padding: 12px;">
+          <div class="stat-label">Volume total</div>
+          <div class="stat-value" style="font-size: 24px;">${totalVolume.toLocaleString('pt-BR')}<span class="stat-unit">kg·rep</span></div>
+        </div>
+      </div>
+      ${totalSets > 0 ? `
+        <div style="margin-top: 10px; font-family: var(--mono); font-size: 11px; color: var(--text-muted);">
+          ${totalSets} séries · ${muscleGroupsHit.size} grupo${muscleGroupsHit.size !== 1 ? 's' : ''} muscular${muscleGroupsHit.size !== 1 ? 'es' : ''}: ${[...muscleGroupsHit].join(' · ')}
+        </div>
+      ` : ''}
+      <button class="btn btn-secondary mt-16" onclick="navigate('workouts')" style="font-size: 12px;">Ver detalhes</button>
+    </div>
+  `;
+}
+
+function shouldShowWeeklyPrompt() {
+  const day = new Date().getDay();
+  if (day !== 5) return false; // só sexta
+  if (state.weeklyReviews.length === 0) return true;
+  const last = state.weeklyReviews[state.weeklyReviews.length - 1];
+  const lastDate = new Date(last.date);
+  const daysSince = (new Date() - lastDate) / (1000*60*60*24);
+  return daysSince >= 6;
+}
+
+// ---------- CHECKLIST ----------
+
+function renderChecklist(app) {
+  const checkin = getCheckinForDate(viewingDate);
+  const completion = getCompletionRate(checkin);
+  const isToday = viewingDate === todayKey();
+
+  app.innerHTML = `
+    <div class="flex-between" style="margin-bottom: 6px;">
+      <div class="page-title" style="margin-bottom:0;">Rotina · <em>${viewingDateLabel()}</em></div>
+      <button class="btn-edit-routine" onclick="openRoutineEditor()" title="Editar rotina">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Editar
+      </button>
+    </div>
+    <div class="page-subtitle">${viewingDateFull()}</div>
+
+    <div class="date-nav">
+      <button class="date-nav-btn" onclick="shiftViewingDate(-1)" title="Dia anterior">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <input type="date" class="date-nav-input" value="${viewingDate}" max="${todayKey()}" onchange="setViewingDate(this.value)">
+      <button class="date-nav-btn" onclick="shiftViewingDate(1)" ${isToday ? 'disabled' : ''} title="Próximo dia">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      ${!isToday ? `<button class="date-nav-today" onclick="setViewingDate(todayKey())">Hoje</button>` : ''}
+    </div>
+
+    <div class="card" style="background: linear-gradient(135deg, var(--card), var(--bg-elevated)); margin-bottom: 24px;">
+      <div class="flex-between" style="margin-bottom: 10px;">
+        <div style="font-family: var(--mono); font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em;">Progresso</div>
+        <div style="font-family: var(--display); font-size: 20px; font-weight: 500;"><span id="checklist-pct">${completion}</span><span style="font-size: 14px; color: var(--text-muted);">%</span></div>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width: ${completion}%"></div></div>
+    </div>
+
+    ${getRoutineTemplate().map(section => renderSection(section, checkin)).join('')}
+
+    <div class="card mt-24">
+      <div class="card-title" style="margin-bottom: 6px;">Dados extras${isToday ? ' de hoje' : ''}</div>
+      <p style="font-size: 11px; color: var(--text-faint); margin-bottom: 14px; font-family: var(--mono);">Salva automático ao mudar · ✓ confirma</p>
+
+      <div class="form-group">
+        <label class="form-label flex-between">
+          <span>Passos registrados</span>
+          <span class="saved-indicator" id="saved-steps">✓ salvo</span>
+        </label>
+        <input type="number" class="form-input" placeholder="Ex: 10500" value="${checkin.steps || ''}"
+          oninput="updateDailyField('steps', this.value)">
+      </div>
+      <div class="form-group">
+        <label class="form-label flex-between">
+          <span>Tipo de treino</span>
+          <span class="saved-indicator" id="saved-workout">✓ salvo</span>
+        </label>
+        <select class="form-select" onchange="updateDailyField('workout', this.value)">
+          <option value="">—</option>
+          ${['Lower A', 'Upper A', 'Lower B', 'Upper B', 'HIIT', 'Cardio leve', 'Descanso', 'Treino personalizado'].map(t =>
+            `<option value="${t}" ${checkin.workout === t ? 'selected' : ''}>${t}</option>`
+          ).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="form-label flex-between">
+          <span>Horas de sono (noite anterior)</span>
+          <span class="saved-indicator" id="saved-sleepHours">✓ salvo</span>
+        </label>
+        <input type="number" step="0.5" class="form-input" placeholder="Ex: 7.5" value="${checkin.sleepHours || ''}"
+          oninput="updateDailyField('sleepHours', this.value)">
+      </div>
+      <div class="form-group">
+        <label class="form-label flex-between">
+          <span>Observações</span>
+          <span class="saved-indicator" id="saved-notes">✓ salvo</span>
+        </label>
+        <textarea class="form-textarea" placeholder="Como se sentiu nesse dia?"
+          oninput="updateDailyField('notes', this.value)">${checkin.notes || ''}</textarea>
+      </div>
+
+      <button class="btn" onclick="confirmDaySave()">Confirmar e salvar dia</button>
+    </div>
+  `;
+  
+  // Attach section toggle listeners
+  document.querySelectorAll('.section-header').forEach(h => {
+    h.addEventListener('click', () => {
+      const id = h.dataset.sectionId;
+      document.getElementById('section-' + id).classList.toggle('expanded');
+      h.classList.toggle('expanded');
+    });
+  });
+  
+  // Check items
+  document.querySelectorAll('.check-item').forEach(item => {
+    item.addEventListener('click', () => {
+      const itemId = item.dataset.itemId;
+      const checkin = getCheckinForDate(viewingDate);
+      checkin.items[itemId] = !checkin.items[itemId];
+      saveState();
+      item.classList.toggle('checked');
+      // Update section count
+      updateSectionCount(item.dataset.section);
+      updateProgressDisplay();
+      if (navigator.vibrate) navigator.vibrate(10);
+    });
+  });
+  
+  // Auto-expand first unchecked section on load
+  const firstIncomplete = getRoutineTemplate().find(s => 
+    s.items.some(i => !checkin.items[i.id])
+  );
+  if (firstIncomplete) {
+    const h = document.querySelector(`[data-section-id="${firstIncomplete.id}"]`);
+    if (h) { h.click(); }
+  }
+}
+
+function renderSection(section, checkin) {
+  const total = section.items.length;
+  const done = section.items.filter(i => checkin.items[i.id]).length;
+  
+  return `
+    <div class="checklist-section">
+      <div class="section-header" data-section-id="${section.id}">
+        <div class="section-title">
+          <span class="section-icon">${section.icon}</span>
+          ${section.title}
+        </div>
+        <div class="section-count" id="count-${section.id}">${done}/${total}</div>
+      </div>
+      <div class="section-items" id="section-${section.id}">
+        ${section.items.map(item => `
+          <div class="check-item ${checkin.items[item.id] ? 'checked' : ''}" data-item-id="${item.id}" data-section="${section.id}">
+            <div class="checkbox"></div>
+            <div style="flex:1">
+              <div class="check-label">${item.label}</div>
+              ${item.note ? `<div class="check-note">${item.note}</div>` : ''}
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
+
+function updateSectionCount(sectionId) {
+  const section = getRoutineTemplate().find(s => s.id === sectionId);
+  if (!section) return;
+  const checkin = getCheckinForDate(viewingDate);
+  const done = section.items.filter(i => checkin.items[i.id]).length;
+  const el = document.getElementById('count-' + sectionId);
+  if (el) el.textContent = `${done}/${section.items.length}`;
+}
+
+function updateProgressDisplay() {
+  const checkin = getCheckinForDate(viewingDate);
+  const rate = getCompletionRate(checkin);
+  const fill = document.querySelector('.progress-fill');
+  if (fill) fill.style.width = rate + '%';
+  const pctEl = document.getElementById('checklist-pct');
+  if (pctEl) pctEl.textContent = rate;
+  if (rate === 100 && viewingDate === todayKey()) {
+    toast('Dia completo! 🎯');
+    if (navigator.vibrate) navigator.vibrate([50, 50, 50]);
+  }
+}
+
+function updateDailyField(field, value) {
+  const checkin = getCheckinForDate(viewingDate);
+  checkin[field] = value;
+  saveState();
+  flashSavedIndicator(field);
+}
+
+function flashSavedIndicator(field) {
+  const el = document.getElementById('saved-' + field);
+  if (!el) return;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 1400);
+}
+
+function confirmDaySave() {
+  ['steps', 'workout', 'sleepHours', 'notes'].forEach(f => flashSavedIndicator(f));
+  saveState();
+  toast('Dia salvo ✓');
+  if (navigator.vibrate) navigator.vibrate(20);
+}
+
+// ---------- ROUTINE EDITOR ----------
+
+let routineDraft = null;
+
+function openRoutineEditor() {
+  routineDraft = JSON.parse(JSON.stringify(getRoutineTemplate()));
+  renderRoutineEditor();
+}
+
+function renderRoutineEditor() {
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="page-title">Editar <em>rotina</em></div>
+    <p class="page-subtitle">Adicione, edite ou remova itens da sua rotina diária.</p>
+
+    <div id="routine-editor-body">
+      ${routineDraft.map((sec, sIdx) => renderRoutineEditorSection(sec, sIdx)).join('')}
+    </div>
+
+    <button class="btn btn-ghost mt-16" onclick="addRoutineSection()">+ Nova seção</button>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 24px;">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+      <button class="btn" onclick="saveRoutineDraft()">Salvar rotina</button>
+    </div>
+
+    <button class="btn btn-ghost mt-16" onclick="resetRoutineToDefault()" style="font-size: 12px;">Restaurar rotina padrão</button>
+  `);
+}
+
+function renderRoutineEditorSection(sec, sIdx) {
+  return `
+    <div class="routine-editor-section">
+      <div class="routine-editor-section-head">
+        <input class="section-icon-input" value="${escapeAttr(sec.icon || '🌱')}" oninput="routineDraft[${sIdx}].icon = this.value">
+        <input class="section-title-input" value="${escapeAttr(sec.title)}" oninput="routineDraft[${sIdx}].title = this.value">
+        <button class="btn-icon danger" onclick="removeRoutineSection(${sIdx})" title="Remover seção">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+        </button>
+      </div>
+      ${sec.items.map((item, iIdx) => `
+        <div class="routine-editor-item">
+          <input class="item-label-input" placeholder="Item" value="${escapeAttr(item.label)}" oninput="routineDraft[${sIdx}].items[${iIdx}].label = this.value">
+          <input class="item-note-input" placeholder="Nota (opcional)" value="${escapeAttr(item.note || '')}" oninput="routineDraft[${sIdx}].items[${iIdx}].note = this.value">
+          <button class="btn-icon danger" onclick="removeRoutineItem(${sIdx}, ${iIdx})" title="Remover item">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+          </button>
+        </div>
+      `).join('')}
+      <div class="routine-editor-add-row">
+        <button class="btn-icon" onclick="addRoutineItem(${sIdx})" title="Adicionar item">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        </button>
+        <span style="color: var(--text-muted); font-size: 12px; align-self: center;">Adicionar item</span>
+      </div>
+    </div>
+  `;
+}
+
+function escapeAttr(str) {
+  return String(str || '')
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
+function addRoutineItem(sIdx) {
+  const id = 'item_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+  routineDraft[sIdx].items.push({ id, label: '', note: '' });
+  renderRoutineEditor();
+}
+
+function removeRoutineItem(sIdx, iIdx) {
+  routineDraft[sIdx].items.splice(iIdx, 1);
+  renderRoutineEditor();
+}
+
+function addRoutineSection() {
+  const id = 'sec_' + Date.now() + '_' + Math.random().toString(36).slice(2,6);
+  routineDraft.push({ id, title: 'Nova seção', icon: '🌱', items: [] });
+  renderRoutineEditor();
+}
+
+function removeRoutineSection(sIdx) {
+  if (!confirm('Remover esta seção e todos os itens dela?')) return;
+  routineDraft.splice(sIdx, 1);
+  renderRoutineEditor();
+}
+
+function saveRoutineDraft() {
+  const cleaned = routineDraft
+    .map(sec => ({
+      ...sec,
+      title: (sec.title || '').trim() || 'Sem título',
+      icon: (sec.icon || '🌱').trim() || '🌱',
+      items: sec.items.filter(it => (it.label || '').trim() !== '')
+        .map(it => ({
+          id: it.id || ('item_' + Math.random().toString(36).slice(2,8)),
+          label: it.label.trim(),
+          ...(it.note && it.note.trim() ? { note: it.note.trim() } : {}),
+        })),
+    }))
+    .filter(sec => sec.items.length > 0);
+
+  if (cleaned.length === 0) {
+    toast('Adicione pelo menos um item', true);
+    return;
+  }
+
+  state.customRoutine = cleaned;
+  saveState();
+  closeModal();
+  toast('Rotina salva ✏️');
+  render();
+}
+
+function resetRoutineToDefault() {
+  if (!confirm('Restaurar a rotina para o padrão? Sua rotina personalizada será perdida.')) return;
+  state.customRoutine = null;
+  saveState();
+  closeModal();
+  toast('Rotina restaurada');
+  render();
+}
+
+// ---------- PROGRESS ----------
+
+function renderProgress(app) {
+  const reviews = state.weeklyReviews;
+  
+  app.innerHTML = `
+    <div class="page-title">Sua <em>evolução</em></div>
+    <div class="page-subtitle">${reviews.length} registros semanais</div>
+
+    ${reviews.length === 0 ? `
+      <div class="empty-state">
+        <h3>Sem dados ainda</h3>
+        <p>Faça seu primeiro registro semanal toda sexta para ver a evolução aqui.</p>
+        <button class="btn" onclick="openWeeklyReview()">Fazer agora</button>
+      </div>
+    ` : `
+      <div class="tabs">
+        <button class="tab active" data-chart="weight">Peso</button>
+        <button class="tab" data-chart="waist">Cintura</button>
+        <button class="tab" data-chart="libido">Libido</button>
+        <button class="tab" data-chart="sleep">Sono</button>
+      </div>
+
+      <div class="card">
+        <div class="chart-container">
+          <canvas id="mainChart"></canvas>
+        </div>
+      </div>
+
+      <div class="stats-grid mt-16">
+        <div class="stat">
+          <div class="stat-label">Peso perdido</div>
+          <div class="stat-value" style="color: var(--accent);">${(state.user.initialWeight - getLastWeight()).toFixed(1)}<span class="stat-unit">kg</span></div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Da meta</div>
+          <div class="stat-value">${Math.round(((state.user.initialWeight - getLastWeight()) / (state.user.initialWeight - state.user.targetWeight)) * 100)}<span class="stat-unit">%</span></div>
+        </div>
+      </div>
+
+      <div class="card mt-16">
+        <div class="card-title" style="margin-bottom: 14px;">Registros recentes</div>
+        <table class="table">
+          <thead>
+            <tr><th>Data</th><th>Peso</th><th>Libido</th><th>Sono</th></tr>
+          </thead>
+          <tbody>
+            ${reviews.slice().reverse().slice(0, 10).map(r => `
+              <tr>
+                <td>${dateToBR(r.date)}</td>
+                <td>${r.weight}kg</td>
+                <td>${r.libido}/10</td>
+                <td>${r.sleep}/10</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <button class="btn mt-24" onclick="openWeeklyReview()">Novo registro semanal</button>
+    `}
+  `;
+  
+  if (reviews.length > 0) {
+    document.querySelectorAll('.tab').forEach(t => {
+      t.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+        t.classList.add('active');
+        renderChart(t.dataset.chart);
+      });
+    });
+    renderChart('weight');
+  }
+}
+
+let currentChart = null;
+
+function renderChart(type) {
+  const canvas = document.getElementById('mainChart');
+  if (!canvas) return;
+  if (currentChart) { currentChart.destroy(); }
+  
+  const reviews = state.weeklyReviews;
+  const labels = reviews.map(r => dateToBR(r.date));
+  
+  const configs = {
+    weight: { data: reviews.map(r => r.weight), label: 'Peso (kg)', color: '#4ade80', target: state.user.targetWeight },
+    waist: { data: reviews.map(r => r.waist), label: 'Cintura (cm)', color: '#f59e0b' },
+    libido: { data: reviews.map(r => r.libido), label: 'Libido (0-10)', color: '#ec4899', min: 0, max: 10 },
+    sleep: { data: reviews.map(r => r.sleep), label: 'Qualidade do sono (0-10)', color: '#60a5fa', min: 0, max: 10 },
+  };
+  
+  const cfg = configs[type];
+  
+  currentChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: cfg.label,
+        data: cfg.data,
+        borderColor: cfg.color,
+        backgroundColor: cfg.color + '22',
+        fill: true,
+        tension: 0.3,
+        pointBackgroundColor: cfg.color,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        borderWidth: 2.5,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1d22',
+          borderColor: '#32363d',
+          borderWidth: 1,
+          titleColor: '#ededed',
+          bodyColor: '#8b8f98',
+          padding: 12,
+          cornerRadius: 8,
+        }
+      },
+      scales: {
+        x: { grid: { color: '#24272d', drawBorder: false }, ticks: { color: '#5a5e67', font: { size: 10 } } },
+        y: { 
+          grid: { color: '#24272d', drawBorder: false }, 
+          ticks: { color: '#5a5e67', font: { size: 10, family: 'JetBrains Mono' } },
+          min: cfg.min,
+          max: cfg.max,
+        }
+      }
+    }
+  });
+}
+
+function openWeeklyReview() {
+  const lastWeight = getLastWeight();
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="page-title">Registro <em>semanal</em></div>
+    <p class="page-subtitle">${new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' })}</p>
+
+    <div class="form-group">
+      <label class="form-label">Peso em jejum (kg)</label>
+      <input type="number" step="0.1" class="form-input" id="w-weight" placeholder="${lastWeight}" value="${lastWeight}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Circunferência da cintura (cm)</label>
+      <input type="number" step="0.5" class="form-input" id="w-waist" placeholder="No umbigo">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Dias com ereção matinal</label>
+      <input type="number" min="0" max="7" class="form-input" id="w-erection" placeholder="0-7">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Libido esta semana</label>
+      <div class="slider-container">
+        <input type="range" min="0" max="10" value="5" class="slider" id="w-libido" oninput="document.getElementById('libido-val').textContent = this.value">
+        <span class="slider-value" id="libido-val">5</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Qualidade do sono</label>
+      <div class="slider-container">
+        <input type="range" min="0" max="10" value="5" class="slider" id="w-sleep" oninput="document.getElementById('sleep-val').textContent = this.value">
+        <span class="slider-value" id="sleep-val">5</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Energia / disposição</label>
+      <div class="slider-container">
+        <input type="range" min="0" max="10" value="5" class="slider" id="w-energy" oninput="document.getElementById('energy-val').textContent = this.value">
+        <span class="slider-value" id="energy-val">5</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Doses de álcool na semana</label>
+      <input type="number" min="0" class="form-input" id="w-alcohol" value="0">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Observações livres</label>
+      <textarea class="form-textarea" id="w-notes" placeholder="Como foi a semana?"></textarea>
+    </div>
+
+    <button class="btn" onclick="saveWeeklyReview()">Salvar registro</button>
+    <button class="btn btn-ghost mt-16" onclick="closeModal()">Cancelar</button>
+  `);
+}
+
+function saveWeeklyReview() {
+  const review = {
+    date: new Date().toISOString().split('T')[0],
+    weight: parseFloat(document.getElementById('w-weight').value) || getLastWeight(),
+    waist: parseFloat(document.getElementById('w-waist').value) || null,
+    erectionDays: parseInt(document.getElementById('w-erection').value) || 0,
+    libido: parseInt(document.getElementById('w-libido').value),
+    sleep: parseInt(document.getElementById('w-sleep').value),
+    energy: parseInt(document.getElementById('w-energy').value),
+    alcohol: parseInt(document.getElementById('w-alcohol').value) || 0,
+    notes: document.getElementById('w-notes').value,
+  };
+  state.weeklyReviews.push(review);
+  saveState();
+  closeModal();
+  toast('Registro salvo! 📊');
+  if (currentView === 'progress' || currentView === 'dashboard') render();
+}
+
+// ---------- WORKOUTS (MUSCULAÇÃO) ----------
+
+const MUSCLE_GROUPS = ['Peito', 'Costas', 'Ombros', 'Braços', 'Pernas', 'Glúteos', 'Core', 'Cardio', 'Outro'];
+
+let workoutsActiveFilter = 'all';
+let workoutsActiveExerciseId = null;
+
+function renderWorkouts(app) {
+  const exercises = state.exercises;
+
+  app.innerHTML = `
+    <div class="page-title">Tracker de <em>musculação</em></div>
+    <div class="page-subtitle">${exercises.length} exercício${exercises.length !== 1 ? 's' : ''} cadastrado${exercises.length !== 1 ? 's' : ''} · ${state.workoutSessions.length} sessão${state.workoutSessions.length !== 1 ? 'ões' : ''}</div>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px;">
+      <button class="btn" onclick="openExerciseForm()">+ Exercício</button>
+      <button class="btn btn-secondary" onclick="openSessionForm()" ${exercises.length === 0 ? 'disabled style=\"opacity:0.5;cursor:not-allowed;\"' : ''}>+ Registrar série</button>
+    </div>
+
+    ${exercises.length === 0 ? `
+      <div class="empty-state">
+        <h3>Sem exercícios ainda</h3>
+        <p>Cadastre os exercícios que você faz na academia (ex: Supino reto, Agachamento, Remada baixa). Depois registre cada série com a carga e repetições para acompanhar sua evolução.</p>
+        <button class="btn" onclick="openExerciseForm()">Cadastrar primeiro exercício</button>
+      </div>
+    ` : renderWorkoutsBody()}
+  `;
+}
+
+function renderWorkoutsBody() {
+  const groups = ['all', ...new Set(state.exercises.map(e => e.muscleGroup).filter(Boolean))];
+  const filtered = workoutsActiveFilter === 'all'
+    ? state.exercises
+    : state.exercises.filter(e => e.muscleGroup === workoutsActiveFilter);
+
+  return `
+    <div class="muscle-filter">
+      ${groups.map(g => `
+        <button class="${workoutsActiveFilter === g ? 'active' : ''}" onclick="setWorkoutFilter('${escapeAttr(g)}')">
+          ${g === 'all' ? 'Todos' : g}
+        </button>
+      `).join('')}
+    </div>
+    ${filtered.map(ex => renderExerciseCard(ex)).join('')}
+  `;
+}
+
+function setWorkoutFilter(g) {
+  workoutsActiveFilter = g;
+  render();
+}
+
+function renderExerciseCard(ex) {
+  const sessions = state.workoutSessions.filter(s => s.exerciseId === ex.id);
+  const lastSession = sessions.length > 0 ? sessions[sessions.length - 1] : null;
+  const allSets = sessions.flatMap(s => s.sets || []);
+  const maxWeight = allSets.length > 0 ? Math.max(...allSets.map(s => parseFloat(s.weight) || 0)) : 0;
+  const lastDate = lastSession ? dateToBR(lastSession.date) : '—';
+
+  return `
+    <div class="exercise-card" onclick="openExerciseDetail('${ex.id}')">
+      <div class="exercise-muscle">${escapeAttr(ex.muscleGroup || 'Outro')}</div>
+      <div class="exercise-name">${escapeAttr(ex.name)}</div>
+      <div class="exercise-meta">
+        <span>📊 <strong>${sessions.length}</strong> sessão${sessions.length !== 1 ? 'ões' : ''}</span>
+        ${maxWeight > 0 ? `<span>🏋️ máx <strong>${maxWeight}kg</strong></span>` : ''}
+        <span>📅 ${lastDate}</span>
+      </div>
+    </div>
+  `;
+}
+
+function openExerciseForm(editingId = null) {
+  const editing = editingId ? state.exercises.find(e => e.id === editingId) : null;
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="page-title">${editing ? 'Editar' : 'Novo'} <em>exercício</em></div>
+    <p class="page-subtitle">Cadastre o exercício uma vez. Depois você só registra as séries.</p>
+
+    <div class="form-group">
+      <label class="form-label">Nome do exercício</label>
+      <input type="text" class="form-input" id="ex-name" placeholder="Ex: Supino reto, Agachamento livre" value="${editing ? escapeAttr(editing.name) : ''}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Grupo muscular</label>
+      <select class="form-select" id="ex-muscle">
+        ${MUSCLE_GROUPS.map(g => `<option value="${g}" ${editing && editing.muscleGroup === g ? 'selected' : ''}>${g}</option>`).join('')}
+      </select>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Anotações (opcional)</label>
+      <textarea class="form-textarea" id="ex-notes" placeholder="Cadência, foco em forma, qualquer dica...">${editing ? escapeAttr(editing.notes || '') : ''}</textarea>
+    </div>
+
+    <button class="btn" onclick="saveExercise(${editing ? `'${editing.id}'` : 'null'})">${editing ? 'Salvar alterações' : 'Cadastrar exercício'}</button>
+    ${editing ? `<button class="btn btn-danger mt-16" onclick="deleteExercise('${editing.id}')">Excluir exercício</button>` : ''}
+    <button class="btn btn-ghost mt-16" onclick="closeModal()">Cancelar</button>
+  `);
+}
+
+function saveExercise(editingId) {
+  const name = document.getElementById('ex-name').value.trim();
+  const muscleGroup = document.getElementById('ex-muscle').value;
+  const notes = document.getElementById('ex-notes').value.trim();
+
+  if (!name) {
+    toast('Dê um nome para o exercício', true);
+    return;
+  }
+
+  if (editingId) {
+    const idx = state.exercises.findIndex(e => e.id === editingId);
+    if (idx >= 0) state.exercises[idx] = { ...state.exercises[idx], name, muscleGroup, notes };
+  } else {
+    state.exercises.push({
+      id: 'ex_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+      name, muscleGroup, notes,
+    });
+  }
+  saveState();
+  closeModal();
+  toast(editingId ? 'Exercício atualizado' : 'Exercício cadastrado 💪');
+  render();
+}
+
+function deleteExercise(id) {
+  const sessionsCount = state.workoutSessions.filter(s => s.exerciseId === id).length;
+  const msg = sessionsCount > 0
+    ? `Excluir este exercício e ${sessionsCount} sessão${sessionsCount !== 1 ? 'ões' : ''} de treino registrada${sessionsCount !== 1 ? 's' : ''}?`
+    : 'Excluir este exercício?';
+  if (!confirm(msg)) return;
+  state.exercises = state.exercises.filter(e => e.id !== id);
+  state.workoutSessions = state.workoutSessions.filter(s => s.exerciseId !== id);
+  saveState();
+  closeModal();
+  toast('Exercício removido');
+  render();
+}
+
+let sessionDraftSets = [{ weight: '', reps: '' }];
+
+function openSessionForm(prefilledExerciseId = null) {
+  if (state.exercises.length === 0) {
+    toast('Cadastre um exercício antes', true);
+    return;
+  }
+  sessionDraftSets = [{ weight: '', reps: '' }];
+
+  if (prefilledExerciseId) {
+    const last = state.workoutSessions.filter(s => s.exerciseId === prefilledExerciseId).slice(-1)[0];
+    if (last && last.sets && last.sets.length) {
+      sessionDraftSets = last.sets.map(s => ({ weight: s.weight, reps: s.reps }));
+    }
+  }
+
+  renderSessionForm(prefilledExerciseId);
+}
+
+function renderSessionForm(prefilledExerciseId = null) {
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="page-title">Registrar <em>série</em></div>
+    <p class="page-subtitle">Cargas e repetições de cada série deste exercício.</p>
+
+    <div class="form-group">
+      <label class="form-label">Data</label>
+      <input type="date" class="form-input" id="sess-date" value="${todayKey()}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Exercício</label>
+      <select class="form-select" id="sess-exercise">
+        ${state.exercises.map(e => `<option value="${e.id}" ${prefilledExerciseId === e.id ? 'selected' : ''}>${escapeAttr(e.name)} · ${escapeAttr(e.muscleGroup || '')}</option>`).join('')}
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Séries</label>
+      <div id="sess-sets">
+        ${sessionDraftSets.map((set, i) => renderSetRow(set, i)).join('')}
+      </div>
+      <button class="btn btn-ghost mt-16" onclick="addSetRow()" style="font-size: 12px;">+ Adicionar série</button>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Observações</label>
+      <textarea class="form-textarea" id="sess-notes" placeholder="Como foi o treino?"></textarea>
+    </div>
+
+    <button class="btn" onclick="saveSession()">Salvar sessão</button>
+    <button class="btn btn-ghost mt-16" onclick="closeModal()">Cancelar</button>
+  `);
+}
+
+function renderSetRow(set, i) {
+  return `
+    <div class="set-row" data-set-idx="${i}">
+      <div class="set-num">${i + 1}</div>
+      <input type="number" step="0.25" min="0" class="form-input" placeholder="kg" value="${set.weight}" oninput="updateSetField(${i}, 'weight', this.value)">
+      <input type="number" min="0" class="form-input" placeholder="reps" value="${set.reps}" oninput="updateSetField(${i}, 'reps', this.value)">
+      <button class="btn-icon danger" onclick="removeSetRow(${i})" title="Remover série">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>
+      </button>
+    </div>
+  `;
+}
+
+function updateSetField(i, field, value) {
+  if (!sessionDraftSets[i]) return;
+  sessionDraftSets[i][field] = value;
+}
+
+function addSetRow() {
+  const last = sessionDraftSets[sessionDraftSets.length - 1];
+  sessionDraftSets.push({ weight: last ? last.weight : '', reps: last ? last.reps : '' });
+  rerenderSetRows();
+}
+
+function removeSetRow(i) {
+  if (sessionDraftSets.length === 1) {
+    sessionDraftSets[0] = { weight: '', reps: '' };
+  } else {
+    sessionDraftSets.splice(i, 1);
+  }
+  rerenderSetRows();
+}
+
+function rerenderSetRows() {
+  const container = document.getElementById('sess-sets');
+  if (!container) return;
+  container.innerHTML = sessionDraftSets.map((set, i) => renderSetRow(set, i)).join('');
+}
+
+function saveSession() {
+  const date = document.getElementById('sess-date').value;
+  const exerciseId = document.getElementById('sess-exercise').value;
+  const notes = document.getElementById('sess-notes').value.trim();
+
+  const sets = sessionDraftSets
+    .map(s => ({ weight: parseFloat(s.weight) || 0, reps: parseInt(s.reps) || 0 }))
+    .filter(s => s.reps > 0);
+
+  if (sets.length === 0) {
+    toast('Adicione pelo menos uma série com reps', true);
+    return;
+  }
+
+  state.workoutSessions.push({
+    id: 'ws_' + Date.now() + '_' + Math.random().toString(36).slice(2,6),
+    date, exerciseId, sets, notes,
+  });
+  state.workoutSessions.sort((a, b) => a.date.localeCompare(b.date));
+  saveState();
+  closeModal();
+  toast('Treino salvo 💪');
+  render();
+}
+
+function openExerciseDetail(id) {
+  const ex = state.exercises.find(e => e.id === id);
+  if (!ex) return;
+  workoutsActiveExerciseId = id;
+  const sessions = state.workoutSessions.filter(s => s.exerciseId === id);
+
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="flex-between" style="margin-bottom: 4px;">
+      <div class="page-title" style="margin-bottom: 0;">${escapeAttr(ex.name)}</div>
+      <button class="btn-icon" onclick="openExerciseForm('${ex.id}')" title="Editar">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+      </button>
+    </div>
+    <p class="page-subtitle"><span class="exercise-muscle">${escapeAttr(ex.muscleGroup || 'Outro')}</span> · ${sessions.length} sessão${sessions.length !== 1 ? 'ões' : ''}</p>
+
+    ${sessions.length === 0 ? `
+      <div class="empty-state">
+        <h3>Sem registros ainda</h3>
+        <p>Registre sua primeira sessão para ver evolução aqui.</p>
+        <button class="btn" onclick="closeModal(); openSessionForm('${ex.id}')">Registrar agora</button>
+      </div>
+    ` : `
+      <div class="tabs">
+        <button class="tab active" data-exchart="weight">Carga</button>
+        <button class="tab" data-exchart="volume">Volume</button>
+        <button class="tab" data-exchart="reps">Reps máx</button>
+      </div>
+
+      <div class="card">
+        <div class="chart-container"><canvas id="exerciseChart"></canvas></div>
+      </div>
+
+      ${renderProgressionSuggestion(sessions)}
+
+      <div class="stats-grid mt-16">
+        <div class="stat">
+          <div class="stat-label">Carga máx</div>
+          <div class="stat-value">${getMaxWeight(sessions)}<span class="stat-unit">kg</span></div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Volume últ.</div>
+          <div class="stat-value">${getLastVolume(sessions)}<span class="stat-unit">kg·rep</span></div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Total sessões</div>
+          <div class="stat-value">${sessions.length}</div>
+        </div>
+        <div class="stat">
+          <div class="stat-label">Volume total</div>
+          <div class="stat-value" style="font-size: 28px;">${getTotalVolume(sessions).toLocaleString('pt-BR')}<span class="stat-unit">kg·rep</span></div>
+        </div>
+      </div>
+
+      <div class="mt-16">
+        <div class="card-title" style="margin-bottom: 10px;">Histórico</div>
+        ${sessions.slice().reverse().map(sess => `
+          <div class="session-card">
+            <div class="session-card-head">
+              <span class="session-date">${dateToBR(sess.date)}${isPRSession(ex.id, sess.id) ? '<span class="pr-badge">🏆 PR</span>' : ''}</span>
+              <button onclick="deleteSession('${sess.id}')" style="background:none;border:none;color:var(--text-faint);cursor:pointer;font-size:11px;">Excluir</button>
+            </div>
+            <div class="session-sets">
+              ${(sess.sets || []).map((s) => `<span class="session-set-pill"><strong>${s.weight}kg</strong> × ${s.reps}</span>`).join('')}
+            </div>
+            ${sess.notes ? `<div style="margin-top:8px;font-size:12px;color:var(--text-muted);">${escapeAttr(sess.notes)}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>
+
+      <button class="btn mt-16" onclick="closeModal(); openSessionForm('${ex.id}')">+ Nova sessão deste exercício</button>
+    `}
+
+    <button class="btn btn-ghost mt-16" onclick="closeModal()">Fechar</button>
+  `);
+
+  if (sessions.length > 0) {
+    setTimeout(() => {
+      document.querySelectorAll('[data-exchart]').forEach(t => {
+        t.addEventListener('click', () => {
+          document.querySelectorAll('[data-exchart]').forEach(x => x.classList.remove('active'));
+          t.classList.add('active');
+          renderExerciseChart(id, t.dataset.exchart);
+        });
+      });
+      renderExerciseChart(id, 'weight');
+    }, 50);
+  }
+}
+
+function getMaxWeight(sessions) {
+  const all = sessions.flatMap(s => s.sets || []);
+  if (all.length === 0) return 0;
+  return Math.max(...all.map(s => parseFloat(s.weight) || 0));
+}
+
+function getLastVolume(sessions) {
+  if (sessions.length === 0) return 0;
+  const last = sessions[sessions.length - 1];
+  return (last.sets || []).reduce((sum, s) => sum + (parseFloat(s.weight) || 0) * (parseInt(s.reps) || 0), 0);
+}
+
+function getTotalVolume(sessions) {
+  return sessions.reduce((sum, s) =>
+    sum + (s.sets || []).reduce((vs, set) => vs + (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0), 0)
+  , 0);
+}
+
+function renderProgressionSuggestion(sessions) {
+  if (sessions.length === 0) return '';
+  const last = sessions[sessions.length - 1];
+  const lastSets = last.sets || [];
+  if (lastSets.length === 0) return '';
+
+  const topSet = lastSets.reduce((max, set) => {
+    const w = parseFloat(set.weight) || 0;
+    return w > (parseFloat(max.weight) || 0) ? set : max;
+  }, lastSets[0]);
+
+  const lastWeight = parseFloat(topSet.weight) || 0;
+  const lastReps = parseInt(topSet.reps) || 0;
+  if (lastWeight === 0 || lastReps === 0) return '';
+
+  let suggestion, logic;
+  if (lastReps >= 10) {
+    const newWeight = (lastWeight + 2.5).toFixed(1).replace(/\.0$/, '');
+    suggestion = `${newWeight}kg × 8`;
+    logic = `Você completou ${lastReps} reps com ${lastWeight}kg — hora de subir a carga.`;
+  } else if (lastReps >= 6) {
+    suggestion = `${lastWeight}kg × ${lastReps + 1}`;
+    logic = `Tente uma rep a mais com a mesma carga.`;
+  } else {
+    const newWeight = (lastWeight + 5).toFixed(1).replace(/\.0$/, '');
+    suggestion = `${newWeight}kg × ${Math.max(3, lastReps - 1)}`;
+    logic = `Aumente a carga; reduza um pouco as reps se precisar.`;
+  }
+
+  return `
+    <div class="progression-card mt-16">
+      <div class="progression-card-title">→ Próxima sessão · sugestão</div>
+      <div class="progression-suggestion">${suggestion}</div>
+      <div class="progression-meta">${logic}</div>
+    </div>
+  `;
+}
+
+function isPRSession(exerciseId, sessionId) {
+  const sessions = state.workoutSessions
+    .filter(s => s.exerciseId === exerciseId)
+    .sort((a, b) => a.date.localeCompare(b.date));
+  const idx = sessions.findIndex(s => s.id === sessionId);
+  if (idx === -1) return false;
+  const sess = sessions[idx];
+  const sessMax = Math.max(...(sess.sets || []).map(set => parseFloat(set.weight) || 0), 0);
+  if (sessMax === 0) return false;
+  const previousMax = sessions.slice(0, idx).reduce((max, s) =>
+    Math.max(max, ...(s.sets || []).map(set => parseFloat(set.weight) || 0))
+  , 0);
+  return sessMax > previousMax;
+}
+
+let exerciseChart = null;
+
+function renderExerciseChart(exerciseId, type) {
+  const canvas = document.getElementById('exerciseChart');
+  if (!canvas) return;
+  if (exerciseChart) exerciseChart.destroy();
+
+  const sessions = state.workoutSessions.filter(s => s.exerciseId === exerciseId);
+  const labels = sessions.map(s => dateToBR(s.date));
+
+  let data, label, color;
+  if (type === 'weight') {
+    data = sessions.map(s => Math.max(...(s.sets || []).map(set => parseFloat(set.weight) || 0), 0));
+    label = 'Carga máx (kg)'; color = '#4ade80';
+  } else if (type === 'volume') {
+    data = sessions.map(s => (s.sets || []).reduce((sum, set) => sum + (parseFloat(set.weight) || 0) * (parseInt(set.reps) || 0), 0));
+    label = 'Volume total (kg·rep)'; color = '#60a5fa';
+  } else {
+    data = sessions.map(s => Math.max(...(s.sets || []).map(set => parseInt(set.reps) || 0), 0));
+    label = 'Reps máx'; color = '#f59e0b';
+  }
+
+  exerciseChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label, data,
+        borderColor: color, backgroundColor: color + '22',
+        fill: true, tension: 0.3,
+        pointBackgroundColor: color,
+        pointRadius: 4, pointHoverRadius: 6, borderWidth: 2.5,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1d22', borderColor: '#32363d', borderWidth: 1,
+          titleColor: '#ededed', bodyColor: '#8b8f98', padding: 12, cornerRadius: 8,
+        }
+      },
+      scales: {
+        x: { grid: { color: '#24272d', drawBorder: false }, ticks: { color: '#5a5e67', font: { size: 10 } } },
+        y: { grid: { color: '#24272d', drawBorder: false }, ticks: { color: '#5a5e67', font: { size: 10, family: 'JetBrains Mono' } } }
+      }
+    }
+  });
+}
+
+function deleteSession(id) {
+  if (!confirm('Excluir esta sessão?')) return;
+  state.workoutSessions = state.workoutSessions.filter(s => s.id !== id);
+  saveState();
+  closeModal();
+  if (workoutsActiveExerciseId) {
+    setTimeout(() => openExerciseDetail(workoutsActiveExerciseId), 50);
+  }
+  toast('Sessão removida');
+  render();
+}
+
+// ---------- LABS ----------
+
+const LAB_MARKERS = [
+  // ========== HORMONAL ==========
+  { key: 'testTotal', label: 'Testosterona Total', unit: 'ng/dL', category: 'Hormonal', ranges: { green: [500, 1000], yellow: [350, 500], red: [0, 350] } },
+  { key: 'testFree', label: 'Testosterona Livre', unit: 'ng/dL', category: 'Hormonal', ranges: { green: [9, 30], yellow: [6, 9], red: [0, 6] } },
+  { key: 'shbg', label: 'SHBG', unit: 'nmol/L', category: 'Hormonal', ranges: { green: [20, 45], yellow: [15, 20], red: [0, 15] } },
+  { key: 'e2', label: 'Estradiol (sensível)', unit: 'pg/mL', category: 'Hormonal', ranges: { green: [20, 40], yellow: [15, 50], red: [0, 100] } },
+  { key: 'prolactin', label: 'Prolactina', unit: 'ng/mL', category: 'Hormonal', ranges: { green: [0, 15], yellow: [15, 20], red: [20, 100] } },
+  { key: 'lh', label: 'LH', unit: 'mUI/mL', category: 'Hormonal', ranges: { green: [1.7, 8.6], yellow: [1, 1.7], red: [0, 1] } },
+  { key: 'fsh', label: 'FSH', unit: 'mUI/mL', category: 'Hormonal', ranges: { green: [1.5, 12.4], yellow: [1, 1.5], red: [0, 1] } },
+  { key: 'dheas', label: 'DHEA-S', unit: 'μg/dL', category: 'Hormonal', ranges: { green: [250, 500], yellow: [150, 250], red: [0, 150] } },
+  
+  // ========== ESTRESSE (CORTISOL) ==========
+  { key: 'cortisolAM', label: 'Cortisol matinal (7-9h)', unit: 'μg/dL', category: 'Estresse', ranges: { green: [6, 18], yellow: [18, 23], red: [23, 50] } },
+  { key: 'cortisolPM', label: 'Cortisol vespertino (16h)', unit: 'μg/dL', category: 'Estresse', ranges: { green: [2, 8], yellow: [8, 12], red: [12, 30] } },
+  { key: 'cortisolSaliva', label: 'Cortisol salivar noite', unit: 'ng/mL', category: 'Estresse', ranges: { green: [0, 2], yellow: [2, 3.5], red: [3.5, 10] } },
+  
+  // ========== TIREOIDE ==========
+  { key: 'tsh', label: 'TSH', unit: 'μUI/mL', category: 'Tireoide', ranges: { green: [0.4, 2.5], yellow: [2.5, 4.5], red: [4.5, 20] } },
+  { key: 't4l', label: 'T4 Livre', unit: 'ng/dL', category: 'Tireoide', ranges: { green: [0.9, 1.7], yellow: [0.7, 0.9], red: [0, 0.7] } },
+  { key: 't3l', label: 'T3 Livre', unit: 'pg/mL', category: 'Tireoide', ranges: { green: [2.3, 4.2], yellow: [2, 2.3], red: [0, 2] } },
+  
+  // ========== GLICÊMICO ==========
+  { key: 'glucose', label: 'Glicemia jejum', unit: 'mg/dL', category: 'Glicêmico', ranges: { green: [70, 99], yellow: [100, 125], red: [126, 300] } },
+  { key: 'insulin', label: 'Insulina jejum', unit: 'μU/mL', category: 'Glicêmico', ranges: { green: [2, 10], yellow: [10, 15], red: [15, 50] } },
+  { key: 'homair', label: 'HOMA-IR (calculado)', unit: '', category: 'Glicêmico', ranges: { green: [0, 2], yellow: [2, 2.5], red: [2.5, 20] } },
+  { key: 'hba1c', label: 'HbA1c', unit: '%', category: 'Glicêmico', ranges: { green: [0, 5.5], yellow: [5.5, 5.7], red: [5.7, 10] } },
+  
+  // ========== LIPÍDICO ==========
+  { key: 'cholesterolTotal', label: 'Colesterol Total', unit: 'mg/dL', category: 'Lipídico', ranges: { green: [0, 190], yellow: [190, 240], red: [240, 500] } },
+  { key: 'hdl', label: 'HDL', unit: 'mg/dL', category: 'Lipídico', ranges: { green: [40, 100], yellow: [35, 40], red: [0, 35] } },
+  { key: 'ldl', label: 'LDL', unit: 'mg/dL', category: 'Lipídico', ranges: { green: [0, 130], yellow: [130, 160], red: [160, 300] } },
+  { key: 'triglycerides', label: 'Triglicerídeos', unit: 'mg/dL', category: 'Lipídico', ranges: { green: [0, 150], yellow: [150, 200], red: [200, 500] } },
+  
+  // ========== INFLAMAÇÃO ==========
+  { key: 'pcrus', label: 'PCR Ultrassensível', unit: 'mg/L', category: 'Inflamação', ranges: { green: [0, 1], yellow: [1, 3], red: [3, 20] } },
+  { key: 'uricAcid', label: 'Ácido Úrico', unit: 'mg/dL', category: 'Inflamação', ranges: { green: [3, 6], yellow: [6, 7], red: [7, 15] } },
+  
+  // ========== FÍGADO ==========
+  { key: 'alt', label: 'ALT (TGP)', unit: 'U/L', category: 'Fígado', ranges: { green: [7, 35], yellow: [35, 50], red: [50, 500] } },
+  { key: 'ast', label: 'AST (TGO)', unit: 'U/L', category: 'Fígado', ranges: { green: [10, 35], yellow: [35, 45], red: [45, 500] } },
+  { key: 'ggt', label: 'GGT', unit: 'U/L', category: 'Fígado', ranges: { green: [8, 40], yellow: [40, 60], red: [60, 300] } },
+  
+  // ========== RENAL ==========
+  { key: 'creatinine', label: 'Creatinina', unit: 'mg/dL', category: 'Renal', ranges: { green: [0.7, 1.2], yellow: [1.2, 1.4], red: [1.4, 10] } },
+  { key: 'urea', label: 'Ureia', unit: 'mg/dL', category: 'Renal', ranges: { green: [15, 40], yellow: [40, 50], red: [50, 200] } },
+  
+  // ========== NUTRICIONAL ==========
+  { key: 'vitd', label: 'Vitamina D (25-OH)', unit: 'ng/mL', category: 'Nutricional', ranges: { green: [40, 60], yellow: [30, 40], red: [0, 30] } },
+  { key: 'b12', label: 'Vitamina B12', unit: 'pg/mL', category: 'Nutricional', ranges: { green: [400, 900], yellow: [300, 400], red: [0, 300] } },
+  { key: 'folate', label: 'Ácido Fólico', unit: 'ng/mL', category: 'Nutricional', ranges: { green: [4, 20], yellow: [3, 4], red: [0, 3] } },
+  { key: 'ferritin', label: 'Ferritina', unit: 'ng/mL', category: 'Nutricional', ranges: { green: [50, 300], yellow: [30, 50], red: [0, 30] } },
+  { key: 'zincSerum', label: 'Zinco sérico', unit: 'μg/dL', category: 'Nutricional', ranges: { green: [70, 120], yellow: [60, 70], red: [0, 60] } },
+  { key: 'magnesium', label: 'Magnésio sérico', unit: 'mg/dL', category: 'Nutricional', ranges: { green: [1.7, 2.3], yellow: [1.5, 1.7], red: [0, 1.5] } },
+  
+  // ========== HEMOGRAMA ==========
+  { key: 'hemoglobin', label: 'Hemoglobina', unit: 'g/dL', category: 'Hemograma', ranges: { green: [13.5, 17.5], yellow: [12, 13.5], red: [0, 12] } },
+  { key: 'hematocrit', label: 'Hematócrito', unit: '%', category: 'Hemograma', ranges: { green: [40, 52], yellow: [36, 40], red: [0, 36] } },
+];
+
+function getMarkerTag(marker, value) {
+  if (!marker.ranges || value === null || value === '' || isNaN(value)) return { class: '', text: '—' };
+  const v = parseFloat(value);
+  if (v >= marker.ranges.green[0] && v <= marker.ranges.green[1]) return { class: 'tag-ok', text: 'Ótimo' };
+  if (v >= marker.ranges.yellow[0] && v <= marker.ranges.yellow[1]) return { class: 'tag-warn', text: 'Atenção' };
+  return { class: 'tag-bad', text: 'Fora' };
+}
+
+function renderExamTimeBanner(lab) {
+  const today = new Date(todayKey() + 'T12:00:00');
+  const examDate = new Date(lab.date + 'T12:00:00');
+  const daysSince = Math.floor((today - examDate) / 86400000);
+
+  let cls, msg;
+  if (daysSince <= 30) {
+    cls = 'recent';
+    msg = `Último exame há ${daysSince} dia${daysSince !== 1 ? 's' : ''} · em dia ✓`;
+  } else if (daysSince <= 120) {
+    cls = 'recent';
+    msg = `Último exame há ${daysSince} dias · ${dateToBR(lab.date)}`;
+  } else if (daysSince <= 200) {
+    cls = 'old';
+    msg = `Último exame há ${daysSince} dias · considere refazer (>4 meses)`;
+  } else {
+    cls = 'old-very';
+    msg = `Último exame há ${daysSince} dias · está na hora de refazer (>6 meses)`;
+  }
+
+  return `
+    <div class="exam-time-banner ${cls}">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+      </svg>
+      <span>${msg}</span>
+    </div>
+  `;
+}
+
+function renderHealthSummary(lab) {
+  const categories = {};
+  LAB_MARKERS.forEach(m => { if (!categories[m.category]) categories[m.category] = { ok: 0, warn: 0, bad: 0 }; });
+  LAB_MARKERS.forEach(m => {
+    const val = lab.markers[m.key];
+    if (val === undefined || val === '' || val === null) return;
+    const tag = getMarkerTag(m, val);
+    if (tag.class === 'tag-ok') categories[m.category].ok++;
+    else if (tag.class === 'tag-warn') categories[m.category].warn++;
+    else if (tag.class === 'tag-bad') categories[m.category].bad++;
+  });
+
+  const cards = Object.entries(categories)
+    .filter(([_, c]) => c.ok + c.warn + c.bad > 0)
+    .map(([name, c]) => {
+      let cls = '';
+      if (c.bad > 0) cls = 'bad';
+      else if (c.warn > 0) cls = 'warn';
+      return `
+        <div class="health-cat-card ${cls}">
+          <div class="health-cat-name">${name}</div>
+          <div class="health-cat-counts">
+            ${c.ok > 0 ? `<span><span class="dot ok"></span>${c.ok}</span>` : ''}
+            ${c.warn > 0 ? `<span><span class="dot warn"></span>${c.warn}</span>` : ''}
+            ${c.bad > 0 ? `<span><span class="dot bad"></span>${c.bad}</span>` : ''}
+          </div>
+        </div>
+      `;
+    }).join('');
+
+  if (!cards) return '';
+
+  return `
+    <div class="card mt-24" style="background: linear-gradient(135deg, var(--card), var(--bg-elevated));">
+      <div class="card-title" style="margin-bottom: 12px;">
+        <span class="dot"></span>Resumo de saúde · último exame (${dateToBR(lab.date)})
+      </div>
+      <div class="health-summary">${cards}</div>
+      <p style="font-size: 11px; color: var(--text-faint); margin-top: 8px;">
+        Toque em qualquer marcador abaixo para ver evolução ao longo do tempo.
+      </p>
+    </div>
+  `;
+}
+
+function getMarkerDelta(markerKey, currentValue, currentDate) {
+  const previous = state.labResults
+    .filter(l => l.date < currentDate && l.markers[markerKey] !== undefined && l.markers[markerKey] !== '')
+    .slice(-1)[0];
+  if (!previous) return null;
+  const prev = parseFloat(previous.markers[markerKey]);
+  const curr = parseFloat(currentValue);
+  if (isNaN(prev) || isNaN(curr)) return null;
+  const diff = curr - prev;
+  return { diff: diff.toFixed(2), prev, prevDate: previous.date };
+}
+
+function classifyDelta(marker, prevValue, currValue) {
+  const prevTag = getMarkerTag(marker, prevValue);
+  const currTag = getMarkerTag(marker, currValue);
+  const score = { 'tag-ok': 2, 'tag-warn': 1, 'tag-bad': 0, '': -1 };
+  const ps = score[prevTag.class] ?? -1;
+  const cs = score[currTag.class] ?? -1;
+  if (cs > ps) return 'improve';
+  if (cs < ps) return 'worsen';
+  return 'same';
+}
+
+function openMarkerEvolution(markerKey) {
+  const marker = LAB_MARKERS.find(m => m.key === markerKey);
+  if (!marker) return;
+
+  const points = state.labResults
+    .filter(l => l.markers[markerKey] !== undefined && l.markers[markerKey] !== '')
+    .map(l => ({ date: l.date, value: parseFloat(l.markers[markerKey]) }))
+    .sort((a, b) => a.date.localeCompare(b.date));
+
+  if (points.length === 0) {
+    toast('Sem dados desse marcador ainda', true);
+    return;
+  }
+
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="page-title">${escapeAttr(marker.label)}</div>
+    <p class="page-subtitle">${marker.unit ? marker.unit + ' · ' : ''}${marker.category} · ${points.length} medição${points.length !== 1 ? 'ões' : ''}</p>
+
+    ${points.length === 1 ? `
+      <div class="card">
+        <div class="stat-label">Valor único</div>
+        <div class="stat-value">${points[0].value}<span class="stat-unit">${marker.unit}</span></div>
+        <div style="margin-top:6px; font-size:11px; color:var(--text-faint); font-family:var(--mono);">${dateToBR(points[0].date)}</div>
+      </div>
+      <p style="margin-top:14px; font-size: 12px; color: var(--text-muted);">Adicione novos exames para ver evolução em gráfico.</p>
+    ` : `
+      <div class="card">
+        <div class="chart-container"><canvas id="markerChart"></canvas></div>
+      </div>
+    `}
+
+    ${marker.ranges ? `
+      <div class="card mt-16">
+        <div class="card-title" style="margin-bottom:10px;">Faixas de referência</div>
+        <div style="display: flex; flex-direction: column; gap: 6px; font-family: var(--mono); font-size: 12px;">
+          <div style="display:flex; justify-content: space-between;"><span><span class="tag tag-ok">Ótimo</span></span><span>${marker.ranges.green[0]} – ${marker.ranges.green[1]}</span></div>
+          <div style="display:flex; justify-content: space-between;"><span><span class="tag tag-warn">Atenção</span></span><span>${marker.ranges.yellow[0]} – ${marker.ranges.yellow[1]}</span></div>
+          <div style="display:flex; justify-content: space-between;"><span><span class="tag tag-bad">Fora</span></span><span>${marker.ranges.red[0]} – ${marker.ranges.red[1]}</span></div>
+        </div>
+      </div>
+    ` : ''}
+
+    <button class="btn btn-ghost mt-16" onclick="closeModal()">Fechar</button>
+  `);
+
+  if (points.length > 1) {
+    setTimeout(() => renderMarkerChart(marker, points), 50);
+  }
+}
+
+let markerChart = null;
+function renderMarkerChart(marker, points) {
+  const canvas = document.getElementById('markerChart');
+  if (!canvas) return;
+  if (markerChart) markerChart.destroy();
+
+  const labels = points.map(p => dateToBR(p.date));
+  const data = points.map(p => p.value);
+
+  const pointColors = points.map(p => {
+    const t = getMarkerTag(marker, p.value);
+    if (t.class === 'tag-ok') return '#4ade80';
+    if (t.class === 'tag-warn') return '#f59e0b';
+    if (t.class === 'tag-bad') return '#ef4444';
+    return '#60a5fa';
+  });
+
+  markerChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: marker.label, data,
+        borderColor: '#60a5fa', backgroundColor: '#60a5fa22',
+        fill: true, tension: 0.3,
+        pointBackgroundColor: pointColors, pointBorderColor: pointColors,
+        pointRadius: 5, pointHoverRadius: 8, borderWidth: 2.5,
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: '#1a1d22', borderColor: '#32363d', borderWidth: 1,
+          titleColor: '#ededed', bodyColor: '#8b8f98', padding: 12, cornerRadius: 8,
+          callbacks: {
+            label: (ctx) => {
+              const p = points[ctx.dataIndex];
+              const tag = getMarkerTag(marker, p.value);
+              return `${p.value} ${marker.unit} · ${tag.text}`;
+            }
+          }
+        }
+      },
+      scales: {
+        x: { grid: { color: '#24272d' }, ticks: { color: '#5a5e67', font: { size: 10 } } },
+        y: { grid: { color: '#24272d' }, ticks: { color: '#5a5e67', font: { size: 10, family: 'JetBrains Mono' } } }
+      }
+    }
+  });
+}
+
+function renderLabs(app) {
+  const labs = state.labResults.slice().reverse();
+  const latestLab = state.labResults.length > 0 ? state.labResults[state.labResults.length - 1] : null;
+
+  app.innerHTML = `
+    <div class="page-title">Exames de <em>sangue</em></div>
+    <div class="page-subtitle">${labs.length} exame${labs.length !== 1 ? 's' : ''} registrado${labs.length !== 1 ? 's' : ''}</div>
+
+    ${latestLab ? renderExamTimeBanner(latestLab) : ''}
+
+    <button class="btn" onclick="openLabForm()">+ Novo exame</button>
+
+    ${latestLab ? renderHealthSummary(latestLab) : ''}
+
+    ${labs.length === 0 ? `
+      <div class="mt-24">
+        <div class="card">
+          <div class="card-title" style="margin-bottom: 14px;"><span class="dot"></span>Exames recomendados pra você</div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 16px;">Peça esses ao clínico/endócrino. Coleta entre <strong style="color: var(--text);">7h30 e 10h em jejum</strong>, evitando treino pesado nas 48h anteriores.</p>
+          
+          <div style="display: flex; flex-direction: column; gap: 10px;">
+            <div class="exam-group">
+              <div class="exam-group-title">🧬 Hormonal (essencial)</div>
+              <div class="exam-group-items">Testosterona total, Testosterona livre, SHBG, Estradiol sensível, Prolactina, LH, FSH, DHEA-S</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">⚡ Estresse (CRÍTICO no seu caso)</div>
+              <div class="exam-group-items">Cortisol matinal, Cortisol vespertino. Idealmente também cortisol salivar (4 coletas no dia)</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">🍬 Metabólico</div>
+              <div class="exam-group-items">Glicemia jejum, Insulina jejum, HbA1c, HOMA-IR (calculado automaticamente)</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">🫀 Cardiovascular</div>
+              <div class="exam-group-items">Colesterol total, HDL, LDL, Triglicerídeos, PCR ultrassensível, Ácido úrico</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">🫁 Fígado + Renal</div>
+              <div class="exam-group-items">ALT, AST, GGT, Creatinina, Ureia</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">🦋 Tireoide</div>
+              <div class="exam-group-items">TSH, T4 livre, T3 livre</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">🥗 Nutricional</div>
+              <div class="exam-group-items">Vitamina D (25-OH), B12, Ácido fólico, Ferritina, Zinco sérico, Magnésio</div>
+            </div>
+            <div class="exam-group">
+              <div class="exam-group-title">🩸 Hemograma completo</div>
+              <div class="exam-group-items">Hemoglobina, Hematócrito, Leucócitos, Plaquetas</div>
+            </div>
+          </div>
+          
+          <div style="background: var(--warn-bg); border: 1px solid var(--warn); border-radius: 10px; padding: 12px; margin-top: 16px; font-size: 12px;">
+            <strong style="color: var(--warn);">⚠️ Atenção especial ao cortisol:</strong>
+            <p style="color: var(--text-muted); margin-top: 6px;">Pela sua suspeita de cortisol alto, o ideal é o teste salivar em 4 pontos (manhã, meio-dia, tarde, antes de dormir) — mostra o ciclo circadiano. Nem todo lab faz, mas Fleury, Sabin e Hermes Pardini costumam oferecer.</p>
+          </div>
+          
+          <div style="background: var(--accent-bg); border: 1px solid var(--accent); border-radius: 10px; padding: 12px; margin-top: 12px; font-size: 12px;">
+            <strong style="color: var(--accent);">💡 Dica prática:</strong>
+            <p style="color: var(--text-muted); margin-top: 6px;">Tire foto ou baixe o PDF do laudo e cole os valores aqui. Você pode fazer isso em 5 min ao chegar em casa. O app vai colorir automaticamente (verde/amarelo/vermelho).</p>
+          </div>
+        </div>
+        
+        <div class="empty-state" style="padding: 24px 20px;">
+          <h3>Ainda não registrou nenhum exame</h3>
+          <p>Depois de coletar, toca em "+ Novo exame" acima e preenche os valores.</p>
+        </div>
+      </div>
+    ` : `
+      <div class="mt-24">
+        ${labs.map((lab, idx) => `
+          <div class="lab-card">
+            <div class="flex-between" style="margin-bottom: 10px;">
+              <div class="lab-date">${dateToBR(lab.date)}${lab.lab ? ' · ' + lab.lab : ''}</div>
+              <button onclick="deleteLab('${lab.id}')" style="background: none; border: none; color: var(--text-faint); cursor: pointer; font-size: 12px;">Excluir</button>
+            </div>
+            <div class="lab-markers">
+              ${LAB_MARKERS.filter(m => lab.markers[m.key] !== undefined && lab.markers[m.key] !== '').map(m => {
+                const val = lab.markers[m.key];
+                const tag = getMarkerTag(m, val);
+                const delta = getMarkerDelta(m.key, val, lab.date);
+                let deltaHtml = '';
+                if (delta) {
+                  const cls = classifyDelta(m, delta.prev, val);
+                  const arrow = parseFloat(delta.diff) > 0 ? '↑' : parseFloat(delta.diff) < 0 ? '↓' : '→';
+                  deltaHtml = `<div class="lab-delta ${cls}">${arrow} ${Math.abs(parseFloat(delta.diff))} vs ${dateToBR(delta.prevDate)}</div>`;
+                }
+                const bgCls = tag.class === 'tag-ok' ? 'ok-bg' : tag.class === 'tag-warn' ? 'warn-bg' : tag.class === 'tag-bad' ? 'bad-bg' : '';
+                return `
+                  <div class="lab-marker ${bgCls}" onclick="openMarkerEvolution('${m.key}')">
+                    <div class="lab-marker-name">${m.label}</div>
+                    <div class="flex-between">
+                      <div class="lab-marker-value">${val} <span style="color: var(--text-faint); font-size: 10px;">${m.unit}</span></div>
+                      ${tag.class ? `<span class="tag ${tag.class}">${tag.text}</span>` : ''}
+                    </div>
+                    ${deltaHtml}
+                  </div>
+                `;
+              }).join('')}
+            </div>
+            ${lab.notes ? `<div style="margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); font-size: 13px; color: var(--text-muted);">${lab.notes}</div>` : ''}
+          </div>
+        `).join('')}
+      </div>
+    `}
+  `;
+}
+
+function openLabForm() {
+  // Agrupa marcadores por categoria
+  const grouped = {};
+  LAB_MARKERS.forEach(m => {
+    if (!grouped[m.category]) grouped[m.category] = [];
+    grouped[m.category].push(m);
+  });
+  
+  const categoryIcons = {
+    'Hormonal': '🧬',
+    'Estresse': '⚡',
+    'Tireoide': '🦋',
+    'Glicêmico': '🍬',
+    'Lipídico': '🫀',
+    'Inflamação': '🔥',
+    'Fígado': '🫁',
+    'Renal': '💧',
+    'Nutricional': '🥗',
+    'Hemograma': '🩸',
+  };
+  
+  showModal(`
+    <div class="modal-handle"></div>
+    <div class="page-title">Novo <em>exame</em></div>
+    <div class="page-subtitle">Preencha apenas os marcadores que você fez — pode deixar em branco o resto</div>
+
+    <div class="form-group">
+      <label class="form-label">Data da coleta</label>
+      <input type="date" class="form-input" id="lab-date" value="${todayKey()}">
+    </div>
+    <div class="form-group">
+      <label class="form-label">Laboratório (opcional)</label>
+      <input type="text" class="form-input" id="lab-name" placeholder="Ex: Sabin, Fleury, Hermes Pardini">
+    </div>
+
+    ${state.labResults.length > 0 ? `
+      <button class="btn btn-secondary mt-16" onclick="prefillLabFromLast()" style="margin-bottom: 18px;">
+        ↻ Copiar valores do último exame
+      </button>
+    ` : ''}
+
+    ${Object.keys(grouped).map(category => `
+      <div class="lab-category-section">
+        <div class="lab-category-title">
+          <span>${categoryIcons[category] || '🔬'}</span>
+          ${category}
+        </div>
+        ${grouped[category].map(m => `
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label class="form-label" style="font-size: 11px; text-transform: none; letter-spacing: 0; font-weight: 500; color: var(--text);">
+              ${m.label} 
+              <span style="color: var(--text-faint); font-family: var(--mono); font-size: 10px;">${m.unit}</span>
+              ${m.key === 'homair' ? '<span style="color: var(--accent); font-size: 10px; margin-left: 6px;">↻ calculado</span>' : ''}
+            </label>
+            <input type="number" step="0.01" class="form-input" id="lab-${m.key}" placeholder="—" ${m.key === 'homair' ? 'readonly style="background: var(--card); color: var(--accent); font-family: var(--mono);"' : 'oninput="maybeCalculateHOMA()"'}>
+          </div>
+        `).join('')}
+      </div>
+    `).join('')}
+
+    <div class="form-group mt-16">
+      <label class="form-label">Observações</label>
+      <textarea class="form-textarea" id="lab-notes" placeholder="Algo relevante sobre este exame? Sintomas na época, medicamentos em uso, etc."></textarea>
+    </div>
+
+    <button class="btn" onclick="saveLab()">Salvar exame</button>
+    <button class="btn btn-ghost mt-16" onclick="closeModal()">Cancelar</button>
+  `);
+}
+
+function maybeCalculateHOMA() {
+  const glu = parseFloat(document.getElementById('lab-glucose')?.value);
+  const ins = parseFloat(document.getElementById('lab-insulin')?.value);
+  const target = document.getElementById('lab-homair');
+  if (glu && ins && target) {
+    target.value = ((glu * ins) / 405).toFixed(2);
+  }
+}
+
+function prefillLabFromLast() {
+  if (state.labResults.length === 0) return;
+  const last = state.labResults[state.labResults.length - 1];
+  let filled = 0;
+  LAB_MARKERS.forEach(m => {
+    const val = last.markers[m.key];
+    if (val !== undefined && val !== '' && val !== null) {
+      const el = document.getElementById('lab-' + m.key);
+      if (el) {
+        el.value = val;
+        filled++;
+      }
+    }
+  });
+  toast(`${filled} valores copiados do último exame`);
+}
+
+function saveLab() {
+  const markers = {};
+  LAB_MARKERS.forEach(m => {
+    const el = document.getElementById('lab-' + m.key);
+    if (el && el.value !== '') markers[m.key] = parseFloat(el.value);
+  });
+  
+  const lab = {
+    id: 'lab_' + Date.now(),
+    date: document.getElementById('lab-date').value,
+    lab: document.getElementById('lab-name').value,
+    markers,
+    notes: document.getElementById('lab-notes').value,
+  };
+  
+  if (Object.keys(markers).length === 0) {
+    toast('Preencha pelo menos um marcador', true);
+    return;
+  }
+  
+  state.labResults.push(lab);
+  state.labResults.sort((a,b) => a.date.localeCompare(b.date));
+  saveState();
+  closeModal();
+  toast('Exame registrado 🧪');
+  render();
+}
+
+function deleteLab(id) {
+  if (!confirm('Excluir este exame?')) return;
+  state.labResults = state.labResults.filter(l => l.id !== id);
+  saveState();
+  render();
+  toast('Exame removido');
+}
+
+// ---------- SETTINGS ----------
+
+function renderSettings(app) {
+  app.innerHTML = `
+    <div class="page-title">Ajustes</div>
+    <div class="page-subtitle">Seus dados, suas configurações</div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 14px;">Dados pessoais</div>
+      <div class="form-group">
+        <label class="form-label">Nome</label>
+        <input type="text" class="form-input" id="set-name" value="${state.user.name}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Idade</label>
+        <input type="number" class="form-input" id="set-age" value="${state.user.age}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Altura (cm)</label>
+        <input type="number" class="form-input" id="set-height" value="${state.user.height}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Peso inicial (kg)</label>
+        <input type="number" step="0.1" class="form-input" id="set-initial" value="${state.user.initialWeight}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Peso meta (kg)</label>
+        <input type="number" step="0.1" class="form-input" id="set-target" value="${state.user.targetWeight}">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Data de início do protocolo</label>
+        <input type="date" class="form-input" id="set-start" value="${state.user.startDate}">
+      </div>
+      <button class="btn" onclick="saveSettings()">Salvar</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title" style="margin-bottom: 14px;">Backup dos dados</div>
+      <p style="font-size: 13px; color: var(--text-muted); margin-bottom: 14px;">Seus dados são salvos localmente no navegador. Exporte regularmente pra não perder.</p>
+      <button class="btn btn-secondary" onclick="exportData()">Exportar JSON</button>
+      <div class="mt-16">
+        <label class="form-label">Importar backup</label>
+        <input type="file" accept=".json" class="form-input" onchange="importData(event)">
+      </div>
+    </div>
+
+    <div class="card" style="border-color: var(--danger);">
+      <div class="card-title" style="margin-bottom: 14px; color: var(--danger);">Zona perigosa</div>
+      <button class="btn btn-danger" onclick="resetAll()">Apagar todos os dados</button>
+    </div>
+
+    <div style="text-align: center; color: var(--text-faint); font-size: 11px; margin-top: 24px; font-family: var(--mono);">
+      Hormonal Reset · v1.0<br>
+      Dados salvos em localStorage<br>
+      Funciona offline
+    </div>
+  `;
+}
+
+function saveSettings() {
+  state.user.name = document.getElementById('set-name').value || 'Você';
+  state.user.age = parseInt(document.getElementById('set-age').value);
+  state.user.height = parseFloat(document.getElementById('set-height').value);
+  state.user.initialWeight = parseFloat(document.getElementById('set-initial').value);
+  state.user.targetWeight = parseFloat(document.getElementById('set-target').value);
+  state.user.startDate = document.getElementById('set-start').value;
+  saveState();
+  toast('Configurações salvas');
+}
+
+function exportData() {
+  const dataStr = JSON.stringify(state, null, 2);
+  const blob = new Blob([dataStr], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `hormonal-reset-backup-${todayKey()}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup baixado 💾');
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const imported = JSON.parse(e.target.result);
+      if (!imported.user || !imported.dailyCheckins) {
+        toast('Arquivo inválido', true);
+        return;
+      }
+      if (!confirm('Isso vai substituir TODOS os seus dados atuais. Continuar?')) return;
+      state = imported;
+      saveState();
+      render();
+      toast('Dados importados 📥');
+    } catch (err) {
+      toast('Erro ao importar', true);
+    }
+  };
+  reader.readAsText(file);
+}
+
+function resetAll() {
+  if (!confirm('ISSO VAI APAGAR TUDO. Tem certeza?')) return;
+  if (!confirm('Última chance. Exportou backup antes?')) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = structuredClone(DEFAULT_STATE);
+  render();
+  toast('Tudo resetado');
+}
+
+// ---------- MODAL ----------
+
+function showModal(html) {
+  const existing = document.querySelector('.modal-backdrop');
+  if (existing) existing.remove();
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.innerHTML = `<div class="modal">${html}</div>`;
+  backdrop.addEventListener('click', (e) => {
+    if (e.target === backdrop) closeModal();
+  });
+  document.body.appendChild(backdrop);
+}
+
+function closeModal() {
+  const m = document.querySelector('.modal-backdrop');
+  if (m) m.remove();
+}
+
+// ============================================================================
+// INIT
+// ============================================================================
+
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => navigate(btn.dataset.view));
+});
+
+// First-time welcome
+if (!localStorage.getItem(STORAGE_KEY)) {
+  saveState();
+  setTimeout(() => {
+    toast('Bem-vindo ao seu protocolo 🌱');
+  }, 500);
+}
+
+render();
+
+// PWA service worker (inline)
+if ('serviceWorker' in navigator) {
+  const swCode = `
+    self.addEventListener('install', e => self.skipWaiting());
+    self.addEventListener('activate', e => self.clients.claim());
+    self.addEventListener('fetch', e => {
+      e.respondWith(
+        caches.open('hr-v1').then(cache => 
+          cache.match(e.request).then(r => r || fetch(e.request).then(fetched => {
+            if (e.request.method === 'GET') cache.put(e.request, fetched.clone());
+            return fetched;
+          }).catch(() => caches.match('/')))
+        )
+      );
+    });
+  `;
+  const blob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(blob);
+  navigator.serviceWorker.register(swUrl).catch(() => {});
+}
+</script>
+</body>
+</html>
